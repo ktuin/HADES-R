@@ -33,3 +33,9 @@ def plot_tstp():
 
 def plot_multirun():
     pass
+
+def make_datfile():
+    pass
+
+def make_statfile():
+    pass
