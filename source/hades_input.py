@@ -1,6 +1,6 @@
 import numpy as num
 import datetime
-import LatLongUTMconversion
+import source.LatLongUTMconversion
 import os
 import sys
 

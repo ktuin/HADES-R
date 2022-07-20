@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to HADES_2.0’s documentation! &mdash; HADES_2.0 2.0.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> HADES_2.0
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to HADES_2.0’s documentation!</a></li>
+<li><a class="reference internal" href="#module-source.hades_location">hades_location module</a></li>
+<li><a class="reference internal" href="#module-source.hades_input">hades_input module</a></li>
+<li><a class="reference internal" href="#module-source.hades_utils">hades_utils module</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">HADES_2.0</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to HADES_2.0’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="welcome-to-hades-2-0-s-documentation">
+<h1>Welcome to HADES_2.0’s documentation!<a class="headerlink" href="#welcome-to-hades-2-0-s-documentation" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="module-source.hades_location">
+<span id="hades-location-module"></span><h1>hades_location module<a class="headerlink" href="#module-source.hades_location" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="source.hades_location.hades_location">
+<em class="property">class </em><code class="sig-prename descclassname">source.hades_location.</code><code class="sig-name descname">hades_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_obj</span></em>, <em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_location.hades_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class takes input objects from hades_input.py to locate events with
+respect to other events (relative location), after which an absolute location is
+found using 1 (relative mode) or more (&lt; 4, absolute) master events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_obj</strong> (<cite>hades.input.Struct</cite>) – Input object from hades_input.py.</p></li>
+<li><p><strong>output_path</strong> (<cite>string</cite>) – Output filename or path.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>See [Grigoli et al. 2021] for further details.</p>
+<dl class="py method">
+<dt id="source.hades_location.hades_location.location">
+<code class="sig-name descname">location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">plot</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location.location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_location.hades_location.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decision module that dictates what hades_location will do according to
+the mode of operation (‘rel’ or ‘abs). Relative relocation means relative
+to one master event, absolute means within the reference coordinate system
+of the minimum of four master events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<cite>string</cite>) – Output file filename or path.</p></li>
+<li><p><strong>mode</strong> (<cite>string</cite>) – Absolute (‘abs’) or relative mode (‘rel’).</p></li>
+<li><p><strong>plot</strong> (<cite>bool</cite>) – Plot the rectilinearity and location results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-source.hades_input">
+<span id="hades-input-module"></span><h1>hades_input module<a class="headerlink" href="#module-source.hades_input" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="source.hades_input.hades_input">
+<em class="property">class </em><code class="sig-prename descclassname">source.hades_input.</code><code class="sig-name descname">hades_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_path</span></em>, <em class="sig-param"><span class="n">event_file</span></em>, <em class="sig-param"><span class="n">station_file</span></em>, <em class="sig-param"><span class="n">sta_select</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class prepares earthquake data (formatted correctly) for the hades_location
+class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<cite>string</cite>) – Path to the data (event, stations).</p></li>
+<li><p><strong>event_file</strong> (<cite>string</cite>) – Filename of the event file (.dat).</p></li>
+<li><p><strong>station_file</strong> (<cite>string</cite>) – Filename of the station file (.txt)</p></li>
+<li><p><strong>sta_select</strong> (<cite>list</cite>) – A selection of two stations if multiple stations are available in the event file.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="source.hades_input.hades_input.distance_calculation">
+<code class="sig-name descname">distance_calculation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vp</span></em>, <em class="sig-param"><span class="n">Vs</span></em>, <em class="sig-param"><span class="n">sta</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.distance_calculation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input.distance_calculation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method calculates the inter-event distance matrix
+for the entire dataset. Input: It requires the P and S wave velocities and
+the station name. For single station mode sta needs to be  string with the name of the
+station “STANAME”, for multistation sta needs to be a list with the stations
+[“STANAME_1”, “STANAME_2”, … ,”STANAME_N”].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="source.hades_input.hades_input.relative_frame">
+<code class="sig-name descname">relative_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vp</span></em>, <em class="sig-param"><span class="n">Vs</span></em>, <em class="sig-param"><span class="n">sta</span></em>, <em class="sig-param"><span class="n">y_ref</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">z_ref</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">fixed_depth</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.relative_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input.relative_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-source.hades_utils">
+<span id="hades-utils-module"></span><h1>hades_utils module<a class="headerlink" href="#module-source.hades_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="source.hades_utils.find_element_in_list">
+<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">find_element_in_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">element</span></em>, <em class="sig-param"><span class="n">list_element</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#find_element_in_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.find_element_in_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="source.hades_utils.plot_multirun">
+<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">plot_multirun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_multirun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.plot_multirun" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="source.hades_utils.plot_tstp">
+<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">plot_tstp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_tstp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.plot_tstp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="source.hades_utils.sortout">
+<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">sortout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig</span></em>, <em class="sig-param"><span class="n">refarray</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#sortout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.sortout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Katinka Tuinstra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

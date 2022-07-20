@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hades_location module &mdash; HADES_2.0 2.0.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> HADES_2.0
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">hades_location module</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HADES_2.0</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>hades_location module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/hades_location.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-source.hades_location">
+<span id="hades-location-module"></span><h1>hades_location module<a class="headerlink" href="#module-source.hades_location" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="source.hades_location.hades_location">
+<em class="property">class </em><code class="sig-prename descclassname">source.hades_location.</code><code class="sig-name descname">hades_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_obj</span></em>, <em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_location.hades_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class takes input objects from hades_input.py to locate events with
+respect to other events (relative location), after which an absolute location is
+found using 1 (relative mode) or more (&lt; 4, absolute) master events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_obj</strong> (<cite>hades.input.Struct</cite>) – Input object from hades_input.py.</p></li>
+<li><p><strong>output_path</strong> (<cite>string</cite>) – Output filename or path.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>See [Grigoli et al. 2021] for further details.</p>
+<dl class="py method">
+<dt id="source.hades_location.hades_location.location">
+<code class="sig-name descname">location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">plot</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location.location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_location.hades_location.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decision module that dictates what hades_location will do according to
+the mode of operation (‘rel’ or ‘abs). Relative relocation means relative
+to one master event, absolute means within the reference coordinate system
+of the minimum of four master events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<cite>string</cite>) – Output file filename or path.</p></li>
+<li><p><strong>mode</strong> (<cite>string</cite>) – Absolute (‘abs’) or relative mode (‘rel’).</p></li>
+<li><p><strong>plot</strong> (<cite>bool</cite>) – Plot the rectilinearity and location results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Katinka Tuinstra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

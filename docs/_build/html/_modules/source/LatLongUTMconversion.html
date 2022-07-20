@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>source.LatLongUTMconversion &mdash; HADES_2.0 2.0.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> HADES_2.0
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">HADES_2.0</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>source.LatLongUTMconversion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for source.LatLongUTMconversion</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># Lat Long - UTM, UTM - Lat Long conversions</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">sqrt</span>
+
+<span class="c1">#LatLong- UTM conversion..h</span>
+<span class="c1">#definitions for lat/long to UTM and UTM to lat/lng conversions</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+
+<span class="n">_deg2rad</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+<span class="n">_rad2deg</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">pi</span>
+
+<span class="n">_EquatorialRadius</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">_eccentricitySquared</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">_ellipsoid</span> <span class="o">=</span> <span class="p">[</span>
+<span class="c1">#  id, Ellipsoid name, Equatorial Radius, square of eccentricity	</span>
+<span class="c1"># first once is a placeholder only, To allow array indices to match id numbers</span>
+	<span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Placeholder&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Airy&quot;</span><span class="p">,</span> <span class="mi">6377563</span><span class="p">,</span> <span class="mf">0.00667054</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Australian National&quot;</span><span class="p">,</span> <span class="mi">6378160</span><span class="p">,</span> <span class="mf">0.006694542</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bessel 1841&quot;</span><span class="p">,</span> <span class="mi">6377397</span><span class="p">,</span> <span class="mf">0.006674372</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Bessel 1841 (Nambia] &quot;</span><span class="p">,</span> <span class="mi">6377484</span><span class="p">,</span> <span class="mf">0.006674372</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Clarke 1866&quot;</span><span class="p">,</span> <span class="mi">6378206</span><span class="p">,</span> <span class="mf">0.006768658</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Clarke 1880&quot;</span><span class="p">,</span> <span class="mi">6378249</span><span class="p">,</span> <span class="mf">0.006803511</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Everest&quot;</span><span class="p">,</span> <span class="mi">6377276</span><span class="p">,</span> <span class="mf">0.006637847</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;Fischer 1960 (Mercury] &quot;</span><span class="p">,</span> <span class="mi">6378166</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Fischer 1968&quot;</span><span class="p">,</span> <span class="mi">6378150</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;GRS 1967&quot;</span><span class="p">,</span> <span class="mi">6378160</span><span class="p">,</span> <span class="mf">0.006694605</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;GRS 1980&quot;</span><span class="p">,</span> <span class="mi">6378137</span><span class="p">,</span> <span class="mf">0.00669438</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;Helmert 1906&quot;</span><span class="p">,</span> <span class="mi">6378200</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Hough&quot;</span><span class="p">,</span> <span class="mi">6378270</span><span class="p">,</span> <span class="mf">0.00672267</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">14</span><span class="p">,</span> <span class="s2">&quot;International&quot;</span><span class="p">,</span> <span class="mi">6378388</span><span class="p">,</span> <span class="mf">0.00672267</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Krassovsky&quot;</span><span class="p">,</span> <span class="mi">6378245</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;Modified Airy&quot;</span><span class="p">,</span> <span class="mi">6377340</span><span class="p">,</span> <span class="mf">0.00667054</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">17</span><span class="p">,</span> <span class="s2">&quot;Modified Everest&quot;</span><span class="p">,</span> <span class="mi">6377304</span><span class="p">,</span> <span class="mf">0.006637847</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;Modified Fischer 1960&quot;</span><span class="p">,</span> <span class="mi">6378155</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;South American 1969&quot;</span><span class="p">,</span> <span class="mi">6378160</span><span class="p">,</span> <span class="mf">0.006694542</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;WGS 60&quot;</span><span class="p">,</span> <span class="mi">6378165</span><span class="p">,</span> <span class="mf">0.006693422</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">21</span><span class="p">,</span> <span class="s2">&quot;WGS 66&quot;</span><span class="p">,</span> <span class="mi">6378145</span><span class="p">,</span> <span class="mf">0.006694542</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">22</span><span class="p">,</span> <span class="s2">&quot;WGS-72&quot;</span><span class="p">,</span> <span class="mi">6378135</span><span class="p">,</span> <span class="mf">0.006694318</span><span class="p">],</span>
+	<span class="p">[</span> <span class="mi">23</span><span class="p">,</span> <span class="s2">&quot;WGS-84&quot;</span><span class="p">,</span> <span class="mi">6378137</span><span class="p">,</span> <span class="mf">0.00669438</span><span class="p">]</span>
+<span class="p">]</span>
+
+<span class="c1">#Reference ellipsoids derived from Peter H. Dana&#39;s website- </span>
+<span class="c1">#http://www.utexas.edu/depts/grg/gcraft/notes/datum/elist.html</span>
+<span class="c1">#Department of Geography, University of Texas at Austin</span>
+<span class="c1">#Internet: pdana@mail.utexas.edu</span>
+<span class="c1">#3/22/95</span>
+
+<span class="c1">#Source</span>
+<span class="c1">#Defense Mapping Agency. 1987b. DMA Technical Report: Supplement to Department of Defense World Geodetic System</span>
+<span class="c1">#1984 Technical Report. Part I and II. Washington, DC: Defense Mapping Agency</span>
+
+<span class="c1">#def LLtoUTM(int ReferenceEllipsoid, const double Lat, const double Long, </span>
+<span class="c1">#			 double &amp;UTMNorthing, double &amp;UTMEasting, char* UTMZone)</span>
+
+<div class="viewcode-block" id="LLtoUTM"><a class="viewcode-back" href="../../LatLongUTMconversion.html#source.LatLongUTMconversion.LLtoUTM">[docs]</a><span class="k">def</span> <span class="nf">LLtoUTM</span><span class="p">(</span><span class="n">ReferenceEllipsoid</span><span class="p">,</span> <span class="n">Lat</span><span class="p">,</span> <span class="n">Long</span><span class="p">,</span> <span class="n">zone</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="c1">#&quot;&quot;&quot;converts lat/long to UTM coords.  Equations from USGS Bulletin 1532 </span>
+<span class="c1">#East Longitudes are positive, West longitudes are negative. </span>
+<span class="c1">#North latitudes are positive, South latitudes are negative</span>
+<span class="c1">#Lat and Long are in decimal degrees</span>
+<span class="c1">#Written by Chuck Gantz- chuck.gantz@globalstar.com&quot;&quot;&quot;</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">_ellipsoid</span><span class="p">[</span><span class="n">ReferenceEllipsoid</span><span class="p">][</span><span class="n">_EquatorialRadius</span><span class="p">]</span>
+    <span class="n">eccSquared</span> <span class="o">=</span> <span class="n">_ellipsoid</span><span class="p">[</span><span class="n">ReferenceEllipsoid</span><span class="p">][</span><span class="n">_eccentricitySquared</span><span class="p">]</span>
+    <span class="n">k0</span> <span class="o">=</span> <span class="mf">0.9996</span>
+
+<span class="c1">#Make sure the longitude is between -180.00 .. 179.9</span>
+    <span class="n">LongTemp</span> <span class="o">=</span> <span class="p">(</span><span class="n">Long</span><span class="o">+</span><span class="mi">180</span><span class="p">)</span><span class="o">-</span><span class="nb">int</span><span class="p">((</span><span class="n">Long</span><span class="o">+</span><span class="mi">180</span><span class="p">)</span><span class="o">/</span><span class="mi">360</span><span class="p">)</span><span class="o">*</span><span class="mi">360</span><span class="o">-</span><span class="mi">180</span> <span class="c1"># -180.00 .. 179.9</span>
+
+    <span class="n">LatRad</span> <span class="o">=</span> <span class="n">Lat</span><span class="o">*</span><span class="n">_deg2rad</span>
+    <span class="n">LongRad</span> <span class="o">=</span> <span class="n">LongTemp</span><span class="o">*</span><span class="n">_deg2rad</span>
+
+    <span class="k">if</span> <span class="n">zone</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">LongTemp</span> <span class="o">+</span> <span class="mi">180</span><span class="p">)</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="n">zone</span>
+  
+    <span class="k">if</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mf">56.0</span> <span class="ow">and</span> <span class="n">Lat</span> <span class="o">&lt;</span> <span class="mf">64.0</span> <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&gt;=</span> <span class="mf">3.0</span> <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&lt;</span> <span class="mf">12.0</span><span class="p">:</span>
+        <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="mi">32</span>
+
+    <span class="c1"># Special zones for Svalbard</span>
+    <span class="k">if</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mf">72.0</span> <span class="ow">and</span> <span class="n">Lat</span> <span class="o">&lt;</span> <span class="mf">84.0</span><span class="p">:</span>
+        <span class="k">if</span>  <span class="n">LongTemp</span> <span class="o">&gt;=</span> <span class="mf">0.0</span>  <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&lt;</span>  <span class="mf">9.0</span><span class="p">:</span><span class="n">ZoneNumber</span> <span class="o">=</span> <span class="mi">31</span>
+        <span class="k">elif</span> <span class="n">LongTemp</span> <span class="o">&gt;=</span> <span class="mf">9.0</span>  <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&lt;</span> <span class="mf">21.0</span><span class="p">:</span> <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="mi">33</span>
+        <span class="k">elif</span> <span class="n">LongTemp</span> <span class="o">&gt;=</span> <span class="mf">21.0</span> <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&lt;</span> <span class="mf">33.0</span><span class="p">:</span> <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="mi">35</span>
+        <span class="k">elif</span> <span class="n">LongTemp</span> <span class="o">&gt;=</span> <span class="mf">33.0</span> <span class="ow">and</span> <span class="n">LongTemp</span> <span class="o">&lt;</span> <span class="mf">42.0</span><span class="p">:</span> <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="mi">37</span>
+
+    <span class="n">LongOrigin</span> <span class="o">=</span> <span class="p">(</span><span class="n">ZoneNumber</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">180</span> <span class="o">+</span> <span class="mi">3</span> <span class="c1">#+3 puts origin in middle of zone</span>
+    <span class="n">LongOriginRad</span> <span class="o">=</span> <span class="n">LongOrigin</span> <span class="o">*</span> <span class="n">_deg2rad</span>
+
+    <span class="c1">#compute the UTM Zone from the latitude and longitude</span>
+    <span class="n">UTMZone</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d%c</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ZoneNumber</span><span class="p">,</span> <span class="n">_UTMLetterDesignator</span><span class="p">(</span><span class="n">Lat</span><span class="p">))</span>
+
+    <span class="n">eccPrimeSquared</span> <span class="o">=</span> <span class="p">(</span><span class="n">eccSquared</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">LatRad</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">tan</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span><span class="o">*</span><span class="n">tan</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">eccPrimeSquared</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">LongRad</span><span class="o">-</span><span class="n">LongOriginRad</span><span class="p">)</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span>
+            <span class="o">-</span> <span class="n">eccSquared</span><span class="o">/</span><span class="mi">4</span>
+            <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">64</span>
+            <span class="o">-</span> <span class="mi">5</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">256</span><span class="p">)</span><span class="o">*</span><span class="n">LatRad</span> 
+           <span class="o">-</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">8</span>
+              <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">32</span>
+              <span class="o">+</span> <span class="mi">45</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">LatRad</span><span class="p">)</span>
+           <span class="o">+</span> <span class="p">(</span><span class="mi">15</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">256</span> <span class="o">+</span> <span class="mi">45</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">LatRad</span><span class="p">)</span> 
+           <span class="o">-</span> <span class="p">(</span><span class="mi">35</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">3072</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">LatRad</span><span class="p">))</span>
+    
+    <span class="n">UTMEasting</span> <span class="o">=</span> <span class="p">(</span><span class="n">k0</span><span class="o">*</span><span class="n">N</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">T</span><span class="o">+</span><span class="n">C</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">/</span><span class="mi">6</span>
+                        <span class="o">+</span> <span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">18</span><span class="o">*</span><span class="n">T</span><span class="o">+</span><span class="n">T</span><span class="o">*</span><span class="n">T</span><span class="o">+</span><span class="mi">72</span><span class="o">*</span><span class="n">C</span><span class="o">-</span><span class="mi">58</span><span class="o">*</span><span class="n">eccPrimeSquared</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">/</span><span class="mi">120</span><span class="p">)</span>
+                  <span class="o">+</span> <span class="mf">500000.0</span><span class="p">)</span>
+
+    <span class="n">UTMNorthing</span> <span class="o">=</span> <span class="p">(</span><span class="n">k0</span><span class="o">*</span><span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="n">N</span><span class="o">*</span><span class="n">tan</span><span class="p">(</span><span class="n">LatRad</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="n">T</span><span class="o">+</span><span class="mi">9</span><span class="o">*</span><span class="n">C</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">C</span><span class="o">*</span><span class="n">C</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">/</span><span class="mi">24</span>
+                                        <span class="o">+</span> <span class="p">(</span><span class="mi">61</span>
+                                           <span class="o">-</span><span class="mi">58</span><span class="o">*</span><span class="n">T</span>
+                                           <span class="o">+</span><span class="n">T</span><span class="o">*</span><span class="n">T</span>
+                                           <span class="o">+</span><span class="mi">600</span><span class="o">*</span><span class="n">C</span>
+                                           <span class="o">-</span><span class="mi">330</span><span class="o">*</span><span class="n">eccPrimeSquared</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">A</span><span class="o">/</span><span class="mi">720</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">Lat</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">UTMNorthing</span> <span class="o">=</span> <span class="n">UTMNorthing</span> <span class="o">+</span> <span class="mf">10000000.0</span><span class="p">;</span> <span class="c1">#10000000 meter offset for southern hemisphere</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">UTMZone</span><span class="p">,</span> <span class="n">UTMEasting</span><span class="p">,</span> <span class="n">UTMNorthing</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_UTMLetterDesignator</span><span class="p">(</span><span class="n">Lat</span><span class="p">):</span>
+<span class="c1">#&quot;&quot;&quot;This routine determines the correct UTM letter designator for the given latitude</span>
+<span class="c1">#returns &#39;Z&#39; if latitude is outside the UTM limits of 84N to 80S</span>
+<span class="c1">#Written by Chuck Gantz- chuck.gantz@globalstar.com&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="mi">84</span> <span class="o">&gt;=</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">72</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;X&#39;</span>
+    <span class="k">elif</span> <span class="mi">72</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;W&#39;</span>
+    <span class="k">elif</span> <span class="mi">64</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">56</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;V&#39;</span>
+    <span class="k">elif</span> <span class="mi">56</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">48</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;U&#39;</span>
+    <span class="k">elif</span> <span class="mi">48</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">40</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;T&#39;</span>
+    <span class="k">elif</span> <span class="mi">40</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">32</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;S&#39;</span>
+    <span class="k">elif</span> <span class="mi">32</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">24</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;R&#39;</span>
+    <span class="k">elif</span> <span class="mi">24</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">16</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;Q&#39;</span>
+    <span class="k">elif</span> <span class="mi">16</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;P&#39;</span>
+    <span class="k">elif</span>  <span class="mi">8</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;N&#39;</span>
+    <span class="k">elif</span>  <span class="mi">0</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">8</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;M&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">8</span><span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">16</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;L&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">16</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">24</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;K&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">24</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">32</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;J&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">32</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">40</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;H&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">40</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">48</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;G&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">48</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">56</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;F&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">56</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">64</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;E&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">64</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">72</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;D&#39;</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">72</span> <span class="o">&gt;</span> <span class="n">Lat</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">80</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;C&#39;</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;Z&#39;</span>	<span class="c1"># if the Latitude is outside the UTM limits</span>
+
+<span class="c1">#void UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing, const double UTMEasting, const char* UTMZone,</span>
+<span class="c1">#			  double&amp; Lat,  double&amp; Long )</span>
+
+<div class="viewcode-block" id="UTMtoLL"><a class="viewcode-back" href="../../LatLongUTMconversion.html#source.LatLongUTMconversion.UTMtoLL">[docs]</a><span class="k">def</span> <span class="nf">UTMtoLL</span><span class="p">(</span><span class="n">ReferenceEllipsoid</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">easting</span><span class="p">,</span> <span class="n">zone</span><span class="p">):</span>
+<span class="c1">#&quot;&quot;&quot;converts UTM coords to lat/long.  Equations from USGS Bulletin 1532 </span>
+<span class="c1">#East Longitudes are positive, West longitudes are negative. </span>
+<span class="c1">#North latitudes are positive, South latitudes are negative</span>
+<span class="c1">#Lat and Long are in decimal degrees. </span>
+<span class="c1">#Written by Chuck Gantz- chuck.gantz@globalstar.com</span>
+<span class="c1">#Converted to Python by Russ Nelson &lt;nelson@crynwr.com&gt;&quot;&quot;&quot;</span>
+
+    <span class="n">k0</span> <span class="o">=</span> <span class="mf">0.9996</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">_ellipsoid</span><span class="p">[</span><span class="n">ReferenceEllipsoid</span><span class="p">][</span><span class="n">_EquatorialRadius</span><span class="p">]</span>
+    <span class="n">eccSquared</span> <span class="o">=</span> <span class="n">_ellipsoid</span><span class="p">[</span><span class="n">ReferenceEllipsoid</span><span class="p">][</span><span class="n">_eccentricitySquared</span><span class="p">]</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="p">))</span>
+    <span class="c1">#NorthernHemisphere; //1 for northern hemispher, 0 for southern</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">easting</span> <span class="o">-</span> <span class="mf">500000.0</span> <span class="c1">#remove 500,000 meter offset for longitude</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">northing</span>
+
+    <span class="n">ZoneLetter</span> <span class="o">=</span> <span class="n">zone</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ZoneNumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">zone</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ZoneLetter</span> <span class="o">&gt;=</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
+        <span class="n">NorthernHemisphere</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># point is in northern hemisphere</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">NorthernHemisphere</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># point is in southern hemisphere</span>
+        <span class="n">y</span> <span class="o">-=</span> <span class="mf">10000000.0</span>         <span class="c1"># remove 10,000,000 meter offset used for southern hemisphere</span>
+
+    <span class="n">LongOrigin</span> <span class="o">=</span> <span class="p">(</span><span class="n">ZoneNumber</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">180</span> <span class="o">+</span> <span class="mi">3</span>  <span class="c1"># +3 puts origin in middle of zone</span>
+
+    <span class="n">eccPrimeSquared</span> <span class="o">=</span> <span class="p">(</span><span class="n">eccSquared</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="p">)</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">k0</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">M</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">4</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">64</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">eccSquared</span><span class="o">/</span><span class="mi">256</span><span class="p">))</span>
+
+    <span class="n">phi1Rad</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">e1</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">27</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">/</span><span class="mi">32</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">mu</span><span class="p">)</span> 
+               <span class="o">+</span> <span class="p">(</span><span class="mi">21</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">/</span><span class="mi">16</span><span class="o">-</span><span class="mi">55</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">/</span><span class="mi">32</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">mu</span><span class="p">)</span>
+               <span class="o">+</span><span class="p">(</span><span class="mi">151</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">*</span><span class="n">e1</span><span class="o">/</span><span class="mi">96</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">mu</span><span class="p">))</span>
+    <span class="n">phi1</span> <span class="o">=</span> <span class="n">phi1Rad</span><span class="o">*</span><span class="n">_rad2deg</span><span class="p">;</span>
+
+    <span class="n">N1</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">))</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">tan</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span><span class="o">*</span><span class="n">tan</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span>
+    <span class="n">C1</span> <span class="o">=</span> <span class="n">eccPrimeSquared</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span>
+    <span class="n">R1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="p">)</span><span class="o">/</span><span class="nb">pow</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">eccSquared</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="p">(</span><span class="n">N1</span><span class="o">*</span><span class="n">k0</span><span class="p">)</span>
+
+    <span class="n">Lat</span> <span class="o">=</span> <span class="n">phi1Rad</span> <span class="o">-</span> <span class="p">(</span><span class="n">N1</span><span class="o">*</span><span class="n">tan</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span><span class="o">/</span><span class="n">R1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">T1</span><span class="o">+</span><span class="mi">10</span><span class="o">*</span><span class="n">C1</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">C1</span><span class="o">*</span><span class="n">C1</span><span class="o">-</span><span class="mi">9</span><span class="o">*</span><span class="n">eccPrimeSquared</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">/</span><span class="mi">24</span>
+                                          <span class="o">+</span><span class="p">(</span><span class="mi">61</span><span class="o">+</span><span class="mi">90</span><span class="o">*</span><span class="n">T1</span><span class="o">+</span><span class="mi">298</span><span class="o">*</span><span class="n">C1</span><span class="o">+</span><span class="mi">45</span><span class="o">*</span><span class="n">T1</span><span class="o">*</span><span class="n">T1</span><span class="o">-</span><span class="mi">252</span><span class="o">*</span><span class="n">eccPrimeSquared</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">C1</span><span class="o">*</span><span class="n">C1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">/</span><span class="mi">720</span><span class="p">)</span>
+    <span class="n">Lat</span> <span class="o">=</span> <span class="n">Lat</span> <span class="o">*</span> <span class="n">_rad2deg</span>
+
+    <span class="n">Long</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">T1</span><span class="o">+</span><span class="n">C1</span><span class="p">)</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">/</span><span class="mi">6</span><span class="o">+</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">C1</span><span class="o">+</span><span class="mi">28</span><span class="o">*</span><span class="n">T1</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">C1</span><span class="o">*</span><span class="n">C1</span><span class="o">+</span><span class="mi">8</span><span class="o">*</span><span class="n">eccPrimeSquared</span><span class="o">+</span><span class="mi">24</span><span class="o">*</span><span class="n">T1</span><span class="o">*</span><span class="n">T1</span><span class="p">)</span>
+            <span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">/</span><span class="mi">120</span><span class="p">)</span><span class="o">/</span><span class="n">cos</span><span class="p">(</span><span class="n">phi1Rad</span><span class="p">)</span>
+    <span class="n">Long</span> <span class="o">=</span> <span class="n">LongOrigin</span> <span class="o">+</span> <span class="n">Long</span> <span class="o">*</span> <span class="n">_rad2deg</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Lat</span><span class="p">,</span> <span class="n">Long</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">LLtoUTM</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mf">45.00</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.00</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">UTMtoLL</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Katinka Tuinstra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
