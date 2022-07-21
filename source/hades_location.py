@@ -1,7 +1,6 @@
+from e13tools import raise_error
 import numpy as num
-import datetime
-import LatLongUTMconversion
-import LatLon2Cart
+import latlon2cart
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -21,16 +20,25 @@ class hades_location(object):
     input_obj : `hades.input.Struct`
         Input object from hades_input.py. 
     output_path : `string`
-        Output filename or path. 
+        Output filename or path.
+    output_frame: `string`
+        Output reference frame, choices are 'cart' or 'latlon'. 
+        Cartesian means with the origin at 0 and all in meters. 
 
     References
     ----------
     See [Grigoli et al. 2021] for further details."""
 
 
-    def __init__(self, input_obj, output_path):
+    def __init__(self, input_obj, output_path, output_frame):
         self.input=input_obj
         self.output_path=output_path
+        self.output_frame = output_frame
+
+        if type(output_frame) is not str:
+            raise_error('Wrong output_frame type, should be `str` options are cart or latlon')
+        elif output_frame is not 'cart' and output_frame is not 'latlon':
+            raise_error('Wrong output_frame name, options are cart or latlon')
 
 
     def location(self, filename, mode, plot):
@@ -484,12 +492,15 @@ class hades_location(object):
         print('Location process completed, number of located events: %d '%(nev))
         catalogue=[]
         latref,lonref=(self.input).origin[0],(self.input).origin[1]
-        orig=LatLon2Cart.Coordinates(latref,lonref,0)
+        orig=latlon2cart.Coordinates(latref,lonref,0)
         with open(os.path.join(self.output_path, (filename+'.txt')),'w') as f:
             f.write('Id;evtno;Lat;Lon;Depth;sta1;tstp1;tP1;sta2;tstp2;tP2;\n')
             for i in range(nev):
                 #lat,lon=LatLongUTMconversion.UTMtoLL(23, self.locations[i,1], self.locations[i,0],(self.input).origin[2])
-                lat,lon,_=orig.cart2geo(self.locations[i,0],self.locations[i,1],0)
+                if self.output_frame == 'latlon':
+                    lat,lon,_=orig.cart2geo(self.locations[i,0],self.locations[i,1],0)
+                elif self.output_frame == 'cart':
+                    lat,lon = self.locations[i,0], self.locations[i,1]
                 depth=(self.locations[i,2])/1000
                 event=evids[i]
                 evtno=int(evids[i].split('#')[-1].split('R')[-1].split('A')[-1].split('E')[-1])

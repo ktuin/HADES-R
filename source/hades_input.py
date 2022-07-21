@@ -1,7 +1,7 @@
 import numpy as num
 import datetime
 import LatLongUTMconversion
-import LatLon2Cart
+import latlon2cart
 import os
 import sys
 
@@ -73,7 +73,7 @@ class hades_input():
         with open(input_file, 'r') as f:
             toks=f.readline().split(';')
             latref,lonref=eval(toks[1]),eval(toks[2])
-            orig=LatLon2Cart.Coordinates(latref,lonref,0)
+            orig=latlon2cart.Coordinates(latref,lonref,0)
             #z0,e0,n0=LatLongUTMconversion.LLtoUTM(23, eval(toks[1]), eval(toks[2])) #order lat lon
             #e0,n0,z0 = orig.geo2cart(eval(toks[1]), eval(toks[2]),0)
             try:
@@ -117,7 +117,7 @@ class hades_input():
 
         (latref,lonref,depthref)=refor
         stations={}
-        orig=LatLon2Cart.Coordinates(latref,lonref,0)
+        orig=latlon2cart.Coordinates(latref,lonref,0)
         with open(input_file, 'r') as f:
             for line in f:
                 toks=line.split()
