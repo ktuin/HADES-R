@@ -251,6 +251,7 @@ class hades_location(object):
             """
 
             bary = cluster[0,:]
+            v0, v1, v2 = define_axis_vectors(station, bary)
 
             ca = z_quat(num.radians(rotations[0])).apply(cluster - bary) + bary
             cb = a_quat(num.radians(rotations[1])).apply(ca - bary) + bary
@@ -466,6 +467,9 @@ class hades_location(object):
             evtsps[sta]=[]
             for event in (self.input).events:
                 evtsps[sta].append((self.input).data[event][sta][-1])
+        
+        self.evtsps = evtsps
+
         return evtsps
 
     
@@ -478,13 +482,13 @@ class hades_location(object):
         evids=(self.input).events
         print('Location process completed, number of located events: %d '%(nev))
         catalogue=[]
-        with open(filename+'.txt','w') as f:
+        with open(os.path.join(self.output_path, (filename+'.txt')),'w') as f:
             f.write('Id;evtno;Lat;Lon;Depth;sta1;tstp1;tP1;sta2;tstp2;tP2;\n')
             for i in range(nev):
                 lat,lon=LatLongUTMconversion.UTMtoLL(23, self.locations[i,1]+(self.input).origin[1], self.locations[i,0]+(self.input).origin[0],(self.input).origin[2])
                 depth=(self.locations[i,2])/1000
                 event=evids[i]
-                evtno=int(evids[i].split('#')[-1].split('R')[-1])
+                evtno=int(evids[i].split('#')[-1].split('R')[-1].split('A')[-1].split('E')[-1])
                 t_string=''
                 for sta in (self.input).sel_sta:
                     if sta in (self.input).data[event].keys():
@@ -506,6 +510,7 @@ class hades_location(object):
         c4='#34A853'
         c3='#FBBC05'
         nref=len((self.input).refevid)
+        print(f'{nref} reference events used')
         plt.figure(figsize=(10.0,15.0))
         ax1=plt.subplot(111)
         ax1.scatter(self.locations[nref:,0],self.locations[nref:,1], s=50, c=c1)
