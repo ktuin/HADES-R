@@ -1,7 +1,7 @@
 import numpy as num
 import datetime
 import LatLongUTMconversion
-import LatLon2Cart
+import latlon2cart
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -484,7 +484,7 @@ class hades_location(object):
         print('Location process completed, number of located events: %d '%(nev))
         catalogue=[]
         latref,lonref=(self.input).origin[0],(self.input).origin[1]
-        orig=LatLon2Cart.Coordinates(latref,lonref,0)
+        orig=latlon2cart.Coordinates(latref,lonref,0)
         with open(os.path.join(self.output_path, (filename+'.txt')),'w') as f:
             f.write('Id;evtno;Lat;Lon;Depth;sta1;tstp1;tP1;sta2;tstp2;tP2;\n')
             for i in range(nev):
