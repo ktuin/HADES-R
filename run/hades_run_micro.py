@@ -1,7 +1,7 @@
 #%%
-from source.LatLongUTMconversion import LLtoUTM, UTMtoLL
-from source.hades_input import hades_input
-from source.hades_location import hades_location
+from LatLongUTMconversion import LLtoUTM, UTMtoLL
+from hades_input import hades_input
+from hades_location import hades_location
 import source.hades_utils as hu
 import pandas as pd
 import numpy as np

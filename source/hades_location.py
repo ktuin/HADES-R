@@ -1,6 +1,6 @@
 import numpy as num
 import datetime
-import source.LatLongUTMconversion
+import LatLongUTMconversion
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -251,9 +251,6 @@ class hades_location(object):
             """
 
             bary = cluster[0,:]
-            # print('Barycenter =', cluster[0,:])
-            # bary = num.array([num.mean(cluster[:,0]), num.mean(cluster[:,1]), num.mean(cluster[:,2])])
-            v0, v1, v2 = define_axis_vectors(station, bary)
 
             ca = z_quat(num.radians(rotations[0])).apply(cluster - bary) + bary
             cb = a_quat(num.radians(rotations[1])).apply(ca - bary) + bary

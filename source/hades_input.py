@@ -1,12 +1,12 @@
 import numpy as num
 import datetime
-import source.LatLongUTMconversion
+import LatLongUTMconversion
 import os
 import sys
 
 km=1000.
 
-class hades_input(object):
+class hades_input():
     """This class prepares earthquake data (formatted correctly) for the hades_location
     class. 
     
