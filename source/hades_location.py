@@ -1,6 +1,7 @@
 import numpy as num
 import datetime
 import LatLongUTMconversion
+import LatLon2Cart
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -482,10 +483,13 @@ class hades_location(object):
         evids=(self.input).events
         print('Location process completed, number of located events: %d '%(nev))
         catalogue=[]
+        latref,lonref=(self.input).origin[0],(self.input).origin[1]
+        orig=LatLon2Cart.Coordinates(latref,lonref,0)
         with open(os.path.join(self.output_path, (filename+'.txt')),'w') as f:
             f.write('Id;evtno;Lat;Lon;Depth;sta1;tstp1;tP1;sta2;tstp2;tP2;\n')
             for i in range(nev):
-                lat,lon=LatLongUTMconversion.UTMtoLL(23, self.locations[i,1]+(self.input).origin[1], self.locations[i,0]+(self.input).origin[0],(self.input).origin[2])
+                #lat,lon=LatLongUTMconversion.UTMtoLL(23, self.locations[i,1], self.locations[i,0],(self.input).origin[2])
+                lat,lon,_=orig.cart2geo(self.locations[i,0],self.locations[i,1],0)
                 depth=(self.locations[i,2])/1000
                 event=evids[i]
                 evtno=int(evids[i].split('#')[-1].split('R')[-1].split('A')[-1].split('E')[-1])

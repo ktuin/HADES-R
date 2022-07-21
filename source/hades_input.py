@@ -1,6 +1,7 @@
 import numpy as num
 import datetime
 import LatLongUTMconversion
+import LatLon2Cart
 import os
 import sys
 
@@ -71,12 +72,15 @@ class hades_input():
         """
         with open(input_file, 'r') as f:
             toks=f.readline().split(';')
-            z0,e0,n0=LatLongUTMconversion.LLtoUTM(23, eval(toks[1]), eval(toks[2])) #order lat lon
+            latref,lonref=eval(toks[1]),eval(toks[2])
+            orig=LatLon2Cart.Coordinates(latref,lonref,0)
+            #z0,e0,n0=LatLongUTMconversion.LLtoUTM(23, eval(toks[1]), eval(toks[2])) #order lat lon
+            #e0,n0,z0 = orig.geo2cart(eval(toks[1]), eval(toks[2]),0)
             try:
-                depth0=eval(toks[3])*km
+                depthref=eval(toks[3])*km
             except:
-                depth0=0.
-            refor=(e0,n0,z0,depth0)
+                depthref=0.
+            refor=(latref,lonref,depthref)
             refevid=[]
             events=[]
             evtsp={}
@@ -88,10 +92,11 @@ class hades_input():
                     evtsp[evid]={}
                     evdate=toks[1][0:10]
                     if toks[0][1]=='R':
-                        _,e,n=LatLongUTMconversion.LLtoUTM(23, eval(toks[2]), eval(toks[3])) # order lat lon
+                        #_,e,n=LatLongUTMconversion.LLtoUTM(23, eval(toks[2]), eval(toks[3])) # order lat lon
+                        e,n,z = orig.geo2cart(eval(toks[2]), eval(toks[3]),0)
                         depth=eval(toks[4])*km
                         refevid.append(evid)
-                        references.append([e-e0,n-n0,depth])
+                        references.append([e,n,depth])
                     else:
                         events.append(evid)
                 else:
@@ -110,19 +115,22 @@ class hades_input():
     def __read_stafile(input_file,refor):
         """Reads the station file."""
 
-        (e0,n0,z0,depth0)=refor
+        (latref,lonref,depthref)=refor
         stations={}
+        orig=LatLon2Cart.Coordinates(latref,lonref,0)
         with open(input_file, 'r') as f:
             for line in f:
                 toks=line.split()
                 sta=toks[0]
-                z,e,n=LatLongUTMconversion.LLtoUTM(23, eval(toks[1]), eval(toks[2])) #order lat lon
+                #z,e,n=LatLongUTMconversion.LLtoUTM(23, eval(toks[1]), eval(toks[2])) #order lat lon
+                e,n,z = orig.geo2cart(eval(toks[1]), eval(toks[2]),0)
                 elev=eval(toks[3])*km
-                if z==z0:
-                    stations[sta]=[e-e0,n-n0,elev]
-                else:
-                    print('cluster and stations are in different UTM zones')
-                    sys.exit()
+                stations[sta]=[e,n,elev]
+                #if z==z0:
+                #    stations[sta]=[e,n,elev]
+                #else:
+                #    print('cluster and stations are in different UTM zones')
+                #    sys.exit()
         return stations
 
 
