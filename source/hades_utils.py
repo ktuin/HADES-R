@@ -34,9 +34,31 @@ def plot_tstp():
 def plot_multirun():
     pass
 
-def make_statfile():
+def make_statfile(path, filename, station_names, station_coordinates):
+    """ Makes a HADES station input file. With structure:
+    station_name lat lon depth[km]
+
+    Parameters
+    ----------
+    path : `str`
+        String with the path to deposit the station.txt file
+    filename : `str`
+        Filename of the station file
+    station_names : `list`
+        List of station names. If stations don't have specific names, 
+        make a logical naming system such as ['STA001', ... 'STA0015']
+    station_coordinates : `numpy.ndarray`
+        Numpy array [N, 3] of station [latitude, longitude, depth]
+    """
+    with open(path+filename+'.txt', 'w') as wrst:
+        for i in range(len(station_names)):
+            wrst.write(f'{station_names[i]} {station_coordinates[i,0]} {station_coordinates[i,1]} {station_coordinates[i,2]}\n')
+
+def make_datfile(path, filename, references, station_names, p_times, s_times):
+    """Work in progress"""
     pass
 
-def make_datfile():
-    pass
+    # with open(path+filename, 'w') as wrdt:
+
+        
 
