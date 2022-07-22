@@ -9,6 +9,7 @@ Welcome to HADES_2.0's documentation!
 .. include:: hades_location.rst
 .. include:: hades_input.rst
 .. include:: hades_utils.rst
+.. include:: inputfile_generator.rst
 
 Indices and tables
 ==================

@@ -12,7 +12,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -66,7 +65,7 @@
 <span id="hades-input-module"></span><h1>hades_input module<a class="headerlink" href="#module-source.hades_input" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="source.hades_input.hades_input">
-<em class="property">class </em><code class="sig-prename descclassname">source.hades_input.</code><code class="sig-name descname">hades_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_path</span></em>, <em class="sig-param"><span class="n">event_file</span></em>, <em class="sig-param"><span class="n">station_file</span></em>, <em class="sig-param"><span class="n">sta_select</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">source.hades_input.</span></code><code class="sig-name descname"><span class="pre">hades_input</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta_select</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_input.hades_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class prepares earthquake data (formatted correctly) for the hades_location
 class.</p>
@@ -82,7 +81,7 @@ class.</p>
 </dl>
 <dl class="py method">
 <dt id="source.hades_input.hades_input.distance_calculation">
-<code class="sig-name descname">distance_calculation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vp</span></em>, <em class="sig-param"><span class="n">Vs</span></em>, <em class="sig-param"><span class="n">sta</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.distance_calculation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input.distance_calculation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">distance_calculation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.distance_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_input.hades_input.distance_calculation" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method calculates the inter-event distance matrix
 for the entire dataset. Input: It requires the P and S wave velocities and
 the station name. For single station mode sta needs to be  string with the name of the
@@ -92,7 +91,7 @@ station “STANAME”, for multistation sta needs to be a list with the stations
 
 <dl class="py method">
 <dt id="source.hades_input.hades_input.relative_frame">
-<code class="sig-name descname">relative_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Vp</span></em>, <em class="sig-param"><span class="n">Vs</span></em>, <em class="sig-param"><span class="n">sta</span></em>, <em class="sig-param"><span class="n">y_ref</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">z_ref</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">fixed_depth</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.relative_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_input.hades_input.relative_frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">relative_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.relative_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_input.hades_input.relative_frame" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

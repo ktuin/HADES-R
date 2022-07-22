@@ -12,7 +12,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -60,9 +59,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for source.hades_location</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">num</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">source.LatLongUTMconversion</span>
+<span></span><span class="kn">from</span> <span class="nn">e13tools</span> <span class="kn">import</span> <span class="n">raise_error</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">num</span>
+<span class="kn">import</span> <span class="nn">latlon2cart</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -82,16 +81,25 @@
 <span class="sd">    input_obj : `hades.input.Struct`</span>
 <span class="sd">        Input object from hades_input.py. </span>
 <span class="sd">    output_path : `string`</span>
-<span class="sd">        Output filename or path. </span>
+<span class="sd">        Output filename or path.</span>
+<span class="sd">    output_frame: `string`</span>
+<span class="sd">        Output reference frame, choices are &#39;cart&#39; or &#39;latlon&#39;. </span>
+<span class="sd">        Cartesian means with the origin at 0 and all in meters. </span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    See [Grigoli et al. 2021] for further details.&quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_obj</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_obj</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">output_frame</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">=</span><span class="n">input_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_frame</span> <span class="o">=</span> <span class="n">output_frame</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output_frame</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">raise_error</span><span class="p">(</span><span class="s1">&#39;Wrong output_frame type, should be `str` options are cart or latlon&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">output_frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s1">&#39;cart&#39;</span> <span class="ow">and</span> <span class="n">output_frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s1">&#39;latlon&#39;</span><span class="p">:</span>
+            <span class="n">raise_error</span><span class="p">(</span><span class="s1">&#39;Wrong output_frame name, options are cart or latlon&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="hades_location.location"><a class="viewcode-back" href="../../index.html#source.hades_location.hades_location.location">[docs]</a>    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">plot</span><span class="p">):</span>
@@ -313,8 +321,6 @@
 <span class="sd">            &quot;&quot;&quot;</span>
 
             <span class="n">bary</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
-            <span class="c1"># print(&#39;Barycenter =&#39;, cluster[0,:])</span>
-            <span class="c1"># bary = num.array([num.mean(cluster[:,0]), num.mean(cluster[:,1]), num.mean(cluster[:,2])])</span>
             <span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">define_axis_vectors</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">bary</span><span class="p">)</span>
 
             <span class="n">ca</span> <span class="o">=</span> <span class="n">z_quat</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">cluster</span> <span class="o">-</span> <span class="n">bary</span><span class="p">)</span> <span class="o">+</span> <span class="n">bary</span>
@@ -531,6 +537,9 @@
             <span class="n">evtsps</span><span class="p">[</span><span class="n">sta</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
             <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
                 <span class="n">evtsps</span><span class="p">[</span><span class="n">sta</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">event</span><span class="p">][</span><span class="n">sta</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">evtsps</span> <span class="o">=</span> <span class="n">evtsps</span>
+
         <span class="k">return</span> <span class="n">evtsps</span>
 
     
@@ -543,13 +552,19 @@
         <span class="n">evids</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">events</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Location process completed, number of located events: </span><span class="si">%d</span><span class="s1"> &#39;</span><span class="o">%</span><span class="p">(</span><span class="n">nev</span><span class="p">))</span>
         <span class="n">catalogue</span><span class="o">=</span><span class="p">[]</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">latref</span><span class="p">,</span><span class="n">lonref</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">orig</span><span class="o">=</span><span class="n">latlon2cart</span><span class="o">.</span><span class="n">Coordinates</span><span class="p">(</span><span class="n">latref</span><span class="p">,</span><span class="n">lonref</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="p">(</span><span class="n">filename</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">)),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Id;evtno;Lat;Lon;Depth;sta1;tstp1;tP1;sta2;tstp2;tP2;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nev</span><span class="p">):</span>
-                <span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">LatLongUTMconversion</span><span class="o">.</span><span class="n">UTMtoLL</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="c1">#lat,lon=LatLongUTMconversion.UTMtoLL(23, self.locations[i,1], self.locations[i,0],(self.input).origin[2])</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_frame</span> <span class="o">==</span> <span class="s1">&#39;latlon&#39;</span><span class="p">:</span>
+                    <span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">orig</span><span class="o">.</span><span class="n">cart2geo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_frame</span> <span class="o">==</span> <span class="s1">&#39;cart&#39;</span><span class="p">:</span>
+                    <span class="n">lat</span><span class="p">,</span><span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">depth</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">1000</span>
                 <span class="n">event</span><span class="o">=</span><span class="n">evids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">evtno</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">evids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">evtno</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">evids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">t_string</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
                 <span class="k">for</span> <span class="n">sta</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">sel_sta</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">sta</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">event</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -571,6 +586,7 @@
         <span class="n">c4</span><span class="o">=</span><span class="s1">&#39;#34A853&#39;</span>
         <span class="n">c3</span><span class="o">=</span><span class="s1">&#39;#FBBC05&#39;</span>
         <span class="n">nref</span><span class="o">=</span><span class="nb">len</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">refevid</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">nref</span><span class="si">}</span><span class="s1"> reference events used&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span><span class="mf">15.0</span><span class="p">))</span>
         <span class="n">ax1</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">nref</span><span class="p">:,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">nref</span><span class="p">:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c1</span><span class="p">)</span>

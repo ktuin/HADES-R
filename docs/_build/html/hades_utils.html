@@ -12,7 +12,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -66,22 +65,46 @@
 <span id="hades-utils-module"></span><h1>hades_utils module<a class="headerlink" href="#module-source.hades_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="source.hades_utils.find_element_in_list">
-<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">find_element_in_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">element</span></em>, <em class="sig-param"><span class="n">list_element</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#find_element_in_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.find_element_in_list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">find_element_in_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#find_element_in_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.find_element_in_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt id="source.hades_utils.make_datfile">
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">make_datfile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">references</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#make_datfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.make_datfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Work in progress</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="source.hades_utils.make_statfile">
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">make_statfile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#make_statfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.make_statfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a HADES station input file. With structure:
+station_name lat lon depth[km]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<cite>str</cite>) – String with the path to deposit the station.txt file</p></li>
+<li><p><strong>filename</strong> (<cite>str</cite>) – Filename of the station file</p></li>
+<li><p><strong>station_names</strong> (<cite>list</cite>) – List of station names. If stations don’t have specific names,
+make a logical naming system such as [‘STA001’, … ‘STA0015’]</p></li>
+<li><p><strong>station_coordinates</strong> (<cite>numpy.ndarray</cite>) – Numpy array [N, 3] of station [latitude, longitude, depth]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="source.hades_utils.plot_multirun">
-<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">plot_multirun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_multirun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.plot_multirun" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">plot_multirun</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_multirun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.plot_multirun" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="source.hades_utils.plot_tstp">
-<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">plot_tstp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_tstp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.plot_tstp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">plot_tstp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#plot_tstp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.plot_tstp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="source.hades_utils.sortout">
-<code class="sig-prename descclassname">source.hades_utils.</code><code class="sig-name descname">sortout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig</span></em>, <em class="sig-param"><span class="n">refarray</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#sortout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#source.hades_utils.sortout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">sortout</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#sortout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.sortout" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

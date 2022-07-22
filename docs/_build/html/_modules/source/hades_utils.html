@@ -12,7 +12,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -95,6 +94,35 @@
 
 <div class="viewcode-block" id="plot_multirun"><a class="viewcode-back" href="../../index.html#source.hades_utils.plot_multirun">[docs]</a><span class="k">def</span> <span class="nf">plot_multirun</span><span class="p">():</span>
     <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="make_statfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_statfile">[docs]</a><span class="k">def</span> <span class="nf">make_statfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">station_coordinates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Makes a HADES station input file. With structure:</span>
+<span class="sd">    station_name lat lon depth[km]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : `str`</span>
+<span class="sd">        String with the path to deposit the station.txt file</span>
+<span class="sd">    filename : `str`</span>
+<span class="sd">        Filename of the station file</span>
+<span class="sd">    station_names : `list`</span>
+<span class="sd">        List of station names. If stations don&#39;t have specific names, </span>
+<span class="sd">        make a logical naming system such as [&#39;STA001&#39;, ... &#39;STA0015&#39;]</span>
+<span class="sd">    station_coordinates : `numpy.ndarray`</span>
+<span class="sd">        Numpy array [N, 3] of station [latitude, longitude, depth]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wrst</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">station_names</span><span class="p">)):</span>
+            <span class="n">wrst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">station_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="make_datfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_datfile">[docs]</a><span class="k">def</span> <span class="nf">make_datfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">p_times</span><span class="p">,</span> <span class="n">s_times</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Work in progress&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+    <span class="c1"># with open(path+filename, &#39;w&#39;) as wrdt:</span>
+
+        
+
 </pre></div>
 
            </div>

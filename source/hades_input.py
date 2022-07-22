@@ -1,6 +1,5 @@
 import numpy as num
 import datetime
-import LatLongUTMconversion
 import latlon2cart
 import os
 import sys
