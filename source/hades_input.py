@@ -183,6 +183,8 @@ class hades_input():
 
 
     def __interev_distance(tsp_ev1,tsp_ev2,kv,sta, stations):
+        """Chooses the inter-event distances computation method"""
+
         if (type(sta)==str) and sta!='ALL':
             ie_dist=hades_input.__onesta_interev_distance(tsp_ev1,tsp_ev2,kv,sta)
         elif type(sta)==list and len(sta)==2:
@@ -194,6 +196,8 @@ class hades_input():
 
 
     def __onesta_interev_distance(tsp_ev1,tsp_ev2,kv,sta):
+        """"Computes inter-event distances with one station"""
+
         stalist=list(set(tsp_ev1.keys()) & set(tsp_ev2.keys()))
         if sta in stalist:
             ie_dist=num.abs(tsp_ev1[sta][-1]-tsp_ev2[sta][-1])*kv
@@ -203,6 +207,8 @@ class hades_input():
 
 
     def __twosta_interev_distance(tsp_ev1,tsp_ev2,kv,sta):
+        """Computes inter-event distances with two stations"""
+
         sta1=sta[0]
         sta2=sta[1]
         stalist=list(set(tsp_ev1.keys()) & set(tsp_ev2.keys()))
@@ -216,6 +222,23 @@ class hades_input():
 
 
     def relative_frame(self,Vp,Vs,sta,y_ref=-1,z_ref=-1,fixed_depth=0):
+        """Constructs a relative reference frame on basis of your reference events.
+        
+        Params
+        ------
+        Vp : `float`
+            P-wave velocity (homogeneous) in [m/s]
+        Vs : `float`
+            S-wave velocity (homogeneous) in [m/s]
+        sta : `list`
+            Stations list
+        y_ref : `int`
+            Y-reference initial sign, -1 or 1 (flips over y-axis)
+        z_ref : `int`
+            Z-reference initial sign, -1 or 1 (flips over z-axis)
+        fixed_depth : `float`
+            The 'depth' between your events in m
+        """
 
         kv=(Vp*Vs)/(Vp-Vs)
         if len(self.refevid)>4:

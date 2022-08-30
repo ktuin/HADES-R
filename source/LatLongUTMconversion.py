@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
+# TAKEN FROM SPECFEM3D LIBRARY
+# https://github.com/geodynamics/specfem3d/blob/master/CUBIT_GEOCUBIT/geocubitlib/LatLongUTMconversion.py
+
+
 # Lat Long - UTM, UTM - Lat Long conversions
+
+
+
 
 from math import pi, sin, cos, tan, sqrt
 

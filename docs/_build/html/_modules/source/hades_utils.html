@@ -12,6 +12,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -32,8 +33,13 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../hades_input.html">hades_input module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hades_location.html">hades_location module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hades_utils.html">hades_utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../inputfile_generator.html">inputfile_generator module</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -63,6 +69,7 @@
 <span class="c1">### Katinka Tuinstra </span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <div class="viewcode-block" id="sortout"><a class="viewcode-back" href="../../index.html#source.hades_utils.sortout">[docs]</a><span class="k">def</span> <span class="nf">sortout</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">refarray</span><span class="p">):</span>
 
@@ -96,12 +103,15 @@
     <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="make_statfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_statfile">[docs]</a><span class="k">def</span> <span class="nf">make_statfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">station_coordinates</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Makes a HADES station input file. With structure:</span>
+    <span class="sd">&quot;&quot;&quot; Makes a HADES station input file. </span>
+<span class="sd">    </span>
+<span class="sd">    You can list all recording stations and only use a subset later.</span>
+<span class="sd">    With structure:</span>
 <span class="sd">    station_name lat lon depth[km]</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    path : `str`</span>
+<span class="sd">    path : `string`</span>
 <span class="sd">        String with the path to deposit the station.txt file</span>
 <span class="sd">    filename : `str`</span>
 <span class="sd">        Filename of the station file</span>
@@ -113,13 +123,68 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wrst</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">station_names</span><span class="p">)):</span>
-            <span class="n">wrst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">station_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="n">wrst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">station_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">station_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saved station file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">!&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="make_datfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_datfile">[docs]</a><span class="k">def</span> <span class="nf">make_datfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">p_times</span><span class="p">,</span> <span class="n">s_times</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Work in progress&quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="make_datfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_datfile">[docs]</a><span class="k">def</span> <span class="nf">make_datfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ref_idx</span><span class="p">,</span> <span class="n">ref_coords</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">p_times</span><span class="p">,</span> <span class="n">s_times</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Makes HADES event input file. </span>
+<span class="sd">    </span>
+<span class="sd">    You can list all recording stations and only use a subset later.</span>
+<span class="sd">    The file structure:</span>
+<span class="sd">    ORIGIN;lat;lon;depth;</span>
+<span class="sd">    #(R)eventno;eventtime;lat;lon;depth;</span>
+<span class="sd">        station_name;p_time;s_time;</span>
+<span class="sd">        ...</span>
+<span class="sd">    #(R)evtno;....</span>
+<span class="sd">     </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : `string`</span>
+<span class="sd">        String with the path to deposit the event.dat file</span>
+<span class="sd">    filename : `string` </span>
+<span class="sd">        File name of  your event input file</span>
+<span class="sd">    ref_idx : `list` or `numpy.ndarray`</span>
+<span class="sd">        List of array of indexes of your master events (minimum 4)</span>
+<span class="sd">    ref_coords : `numpy.ndarray`</span>
+<span class="sd">        Array [M, 3] of M master events with their lat, lon depth coordinates.</span>
+<span class="sd">        If you only have one master event, use 0,0,0 as coordinates for the other</span>
+<span class="sd">        events.</span>
+<span class="sd">    origin : `numpy.ndarray` or `list`</span>
+<span class="sd">        Origin coordinates of the cluster. Can be the literal barycentre or the</span>
+<span class="sd">        coordinates of the first master event (default).</span>
+<span class="sd">    station_names : `list`</span>
+<span class="sd">        List of station names. Must be present in the station file as well.</span>
+<span class="sd">    p_times : `list`</span>
+<span class="sd">        List of p-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</span>
+<span class="sd">    s_times : `list`</span>
+<span class="sd">        List of s-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># with open(path+filename, &#39;w&#39;) as wrdt:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wrdt</span><span class="p">:</span>
+        <span class="n">wrdt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ORIGIN;</span><span class="si">{</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+        <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p_times</span><span class="p">)):</span>
+            <span class="n">wrdt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ref_idx</span><span class="p">:</span>
+                <span class="n">wrdt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="n">ref_coords</span><span class="p">[:,</span><span class="n">count</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reference event </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> added.&#39;</span><span class="p">)</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+            
+            <span class="n">wrdt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">p_times</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">station_names</span><span class="p">)):</span>
+                <span class="c1"># we only need the time part of the timestring</span>
+                <span class="n">tmp_pt</span> <span class="o">=</span> <span class="n">p_times</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">tmp_st</span> <span class="o">=</span> <span class="n">s_times</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">wrdt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">station_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">tmp_pt</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">tmp_st</span><span class="si">}</span><span class="s1">;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saved event file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">!&#39;</span><span class="p">)</span></div>
 
         
 

@@ -30,10 +30,11 @@ class hades_location(object):
     See [Grigoli et al. 2021] for further details."""
 
 
-    def __init__(self, input_obj, output_path, output_frame):
+    def __init__(self, input_obj, output_path, output_frame, verbose=False):
         self.input=input_obj
         self.output_path=output_path
         self.output_frame = output_frame
+        self.verbose = verbose
 
         if type(output_frame) is not str:
             raise_error('Wrong output_frame type, should be `str` options are cart or latlon')
@@ -309,7 +310,8 @@ class hades_location(object):
                     rotations=[theta, 0 , 0], station=(self.input).stations[sts[0]])
             pca=self.__pca_theta_calculation(qrot_z[:,0], qrot_z[:,1], qrot_z[:,2], evtsps,stations, plot=False)
             if pca < pca_max_z:
-                print('Update Z, theta', theta)
+                if self.verbose == True:
+                    print('Update Z, theta', theta)
                 pca_max_z=pca
                 theta_best_z=theta
             else:
@@ -322,7 +324,8 @@ class hades_location(object):
             pca=self.__pca_theta_calculation(qrot_a[:,0], qrot_a[:,1], qrot_a[:,2], evtsps,stations, plot=False)
 
             if pca < pca_max_a:
-                print('Update A, theta', theta)
+                if self.verbose == True:
+                    print('Update A, theta', theta)
                 pca_max_a=pca
                 theta_best_a=theta
             else: 
@@ -335,7 +338,8 @@ class hades_location(object):
             pca=self.__pca_theta_calculation(qrot_b[:,0], qrot_b[:,1], qrot_b[:,2], evtsps,stations, plot=False)
 
             if pca < pca_max_b:
-                print('Update B, theta', theta)
+                if self.verbose == True:
+                    print('Update B, theta', theta)
                 pca_max_b=pca
                 theta_best_b=theta
                 self.pca = pca

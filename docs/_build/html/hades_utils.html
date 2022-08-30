@@ -12,9 +12,12 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="inputfile_generator module" href="inputfile_generator.html" />
+    <link rel="prev" title="hades_location module" href="hades_location.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,11 +35,13 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">hades_utils module</a></li>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hades_input.html">hades_input module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hades_location.html">hades_location module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hades_utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputfile_generator.html">inputfile_generator module</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -61,7 +66,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="module-source.hades_utils">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-source.hades_utils">
 <span id="hades-utils-module"></span><h1>hades_utils module<a class="headerlink" href="#module-source.hades_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="source.hades_utils.find_element_in_list">
@@ -70,19 +99,47 @@
 
 <dl class="py function">
 <dt id="source.hades_utils.make_datfile">
-<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">make_datfile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">references</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#make_datfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.make_datfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Work in progress</p>
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">make_datfile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#make_datfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.make_datfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes HADES event input file.</p>
+<p>You can list all recording stations and only use a subset later.
+The file structure:
+ORIGIN;lat;lon;depth;
+#(R)eventno;eventtime;lat;lon;depth;</p>
+<blockquote>
+<div><p>station_name;p_time;s_time;
+…</p>
+</div></blockquote>
+<p>#(R)evtno;….</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<cite>string</cite>) – String with the path to deposit the event.dat file</p></li>
+<li><p><strong>filename</strong> (<cite>string</cite>) – File name of  your event input file</p></li>
+<li><p><strong>ref_idx</strong> (<cite>list</cite> or <cite>numpy.ndarray</cite>) – List of array of indexes of your master events (minimum 4)</p></li>
+<li><p><strong>ref_coords</strong> (<cite>numpy.ndarray</cite>) – Array [M, 3] of M master events with their lat, lon depth coordinates.
+If you only have one master event, use 0,0,0 as coordinates for the other
+events.</p></li>
+<li><p><strong>origin</strong> (<cite>numpy.ndarray</cite> or <cite>list</cite>) – Origin coordinates of the cluster. Can be the literal barycentre or the
+coordinates of the first master event (default).</p></li>
+<li><p><strong>station_names</strong> (<cite>list</cite>) – List of station names. Must be present in the station file as well.</p></li>
+<li><p><strong>p_times</strong> (<cite>list</cite>) – List of p-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</p></li>
+<li><p><strong>s_times</strong> (<cite>list</cite>) – List of s-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="source.hades_utils.make_statfile">
 <code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">make_statfile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#make_statfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.make_statfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes a HADES station input file. With structure:
+<dd><p>Makes a HADES station input file.</p>
+<p>You can list all recording stations and only use a subset later.
+With structure:
 station_name lat lon depth[km]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<cite>str</cite>) – String with the path to deposit the station.txt file</p></li>
+<li><p><strong>path</strong> (<cite>string</cite>) – String with the path to deposit the station.txt file</p></li>
 <li><p><strong>filename</strong> (<cite>str</cite>) – Filename of the station file</p></li>
 <li><p><strong>station_names</strong> (<cite>list</cite>) – List of station names. If stations don’t have specific names,
 make a logical naming system such as [‘STA001’, … ‘STA0015’]</p></li>
@@ -112,7 +169,10 @@ make a logical naming system such as [‘STA001’, … ‘STA0015’]</p></li>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hades_location.html" class="btn btn-neutral float-left" title="hades_location module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="inputfile_generator.html" class="btn btn-neutral float-right" title="inputfile_generator module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

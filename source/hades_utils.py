@@ -1,8 +1,7 @@
 ### Function dump file
 ### Katinka Tuinstra 
-
 import numpy as np
-from datetime import datetime
+from e13tools import raise_error
 
 def sortout(orig, refarray):
 
@@ -22,6 +21,40 @@ def find_element_in_list(element, list_element):
         return None
 
 def find_element_in_list(element, list_element):
+    try:
+        index_element = list_element.index(element)
+        return index_element
+    except ValueError:
+        return None
+
+def distance_calculation(cluster, station):
+    """Calculates the distances between cluster and station.
+    
+    Params
+    ------
+    cluster : `numpy.ndarray`
+        Array with cluster coords of N events [N,3]
+    station : `numpy.ndarray`
+        Array with station coords [1,3]
+        
+    Returns
+    -------
+    distances : `numpy.ndarray`
+        Array with distances of N events [1,N]
+    """
+
+    distances = np.sqrt(
+                (cluster[:,0]-station[0])**2+
+                (cluster[:,1]-station[1])**2+
+                (cluster[:,2]-station[2])**2
+    )
+
+    return distances
+
+
+
+def find_element_in_list(element, list_element):
+    """Finds element in list."""
     try:
         index_element = list_element.index(element)
         return index_element
@@ -58,7 +91,7 @@ def make_statfile(path, filename, station_names, station_coordinates):
         for i in range(len(station_names)):
             wrst.write(f'{station_names[i]} {station_coordinates[i,0]} {station_coordinates[i,1]} {station_coordinates[i,2]}\n')
     
-    print(f'Saved station file {filename} in {path}!')
+    print(f'Saved station file {path}{filename}  - success!')
 
 def make_datfile(path, filename, ref_idx, ref_coords, origin, station_names, p_times, s_times):
     """Makes HADES event input file. 
@@ -89,20 +122,25 @@ def make_datfile(path, filename, ref_idx, ref_coords, origin, station_names, p_t
     station_names : `list`
         List of station names. Must be present in the station file as well.
     p_times : `list`
-        List of p-pick timestrings in the format %yy/%dd/%mm %H:%M:%S.%f
+        List of p-pick timestrings in the format %Y/%d/%m %H:%M:%S.%f
     s_times : `list`
-        List of s-pick timestrings in the format %yy/%dd/%mm %H:%M:%S.%f
+        List of s-pick timestrings in the format %Y/%d/%m %H:%M:%S.%f
     """
 
-    with open(path+filename, 'w') as wrdt:
-        wrdt.write(f'ORIGIN;{origin[0]};{origin[1]};{origin[2]};\n')
+    if len(ref_idx) < 4:
+        raise_error('Minimum reference events are 4. Even if only 1 location is known, select\n more events to form coordinate system.')
 
+    with open(path+filename+'.dat', 'w') as wrdt:
+        wrdt.write(f'ORIGIN;{origin[0]};{origin[1]};{origin[2]};\n')
+        
+        count=0
         for i in range(len(p_times)):
             wrdt.write(f'#')
             if i in ref_idx:
                 wrdt.write(f'R')
-                coords = ref_coords[i,:]
+                coords = ref_coords[:,count]
                 print(f'Reference event {i} added.')
+                count += 1
             else:
                 coords = np.array([0,0,0])
             
@@ -115,7 +153,7 @@ def make_datfile(path, filename, ref_idx, ref_coords, origin, station_names, p_t
 
                 wrdt.write(f'{station_names[j]};{tmp_pt};{tmp_st};\n')
     
-    print(f'Saved event file {filename} in {path}!')
+    print(f'Saved event file {path}{filename} - success!')
 
         
 
