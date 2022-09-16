@@ -38,7 +38,6 @@
 <li class="toctree-l1"><a class="reference internal" href="hades_input.html">hades_input module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hades_location.html">hades_location module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hades_utils.html">hades_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inputfile_generator.html">inputfile_generator module</a></li>
 </ul>
 
         </div>
@@ -96,7 +95,7 @@
 <span id="hades-location-module"></span><h1>hades_location module<a class="headerlink" href="#module-source.hades_location" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="source.hades_location.hades_location">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">source.hades_location.</span></code><code class="sig-name descname"><span class="pre">hades_location</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_location.hades_location" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">source.hades_location.</span></code><code class="sig-name descname"><span class="pre">hades_location</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_location.html#hades_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_location.hades_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class takes input objects from hades_input.py to locate events with
 respect to other events (relative location), after which an absolute location is
@@ -171,7 +170,22 @@ station “STANAME”, for multistation sta needs to be a list with the stations
 <dl class="py method">
 <dt id="source.hades_input.hades_input.relative_frame">
 <code class="sig-name descname"><span class="pre">relative_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_input.html#hades_input.relative_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_input.hades_input.relative_frame" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Constructs a relative reference frame on basis of your reference events.</p>
+<dl>
+<dt>Vp<span class="classifier"><cite>float</cite></span></dt><dd><p>P-wave velocity (homogeneous) in [m/s]</p>
+</dd>
+<dt>Vs<span class="classifier"><cite>float</cite></span></dt><dd><p>S-wave velocity (homogeneous) in [m/s]</p>
+</dd>
+<dt>sta<span class="classifier"><cite>list</cite></span></dt><dd><p>Stations list</p>
+</dd>
+<dt>y_ref<span class="classifier"><cite>int</cite></span></dt><dd><p>Y-reference initial sign, -1 or 1 (flips over y-axis)</p>
+</dd>
+<dt>z_ref<span class="classifier"><cite>int</cite></span></dt><dd><p>Z-reference initial sign, -1 or 1 (flips over z-axis)</p>
+</dd>
+<dt>fixed_depth<span class="classifier"><cite>float</cite></span></dt><dd><p>The ‘depth’ between your events in m</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -179,9 +193,30 @@ station “STANAME”, for multistation sta needs to be a list with the stations
 <div class="section" id="module-source.hades_utils">
 <span id="hades-utils-module"></span><h1>hades_utils module<a class="headerlink" href="#module-source.hades_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="source.hades_utils.distance_calculation">
+<code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">distance_calculation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#distance_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.distance_calculation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distances between cluster and station.</p>
+<dl>
+<dt>cluster<span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array with cluster coords of N events [N,3]</p>
+</dd>
+<dt>station<span class="classifier"><cite>numpy.ndarray</cite></span></dt><dd><p>Array with station coords [1,3]</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>distances</strong> – Array with distances of N events [1,N]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>numpy.ndarray</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="source.hades_utils.find_element_in_list">
 <code class="sig-prename descclassname"><span class="pre">source.hades_utils.</span></code><code class="sig-name descname"><span class="pre">find_element_in_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/source/hades_utils.html#find_element_in_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#source.hades_utils.find_element_in_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Finds element in list.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="source.hades_utils.make_datfile">
@@ -190,12 +225,10 @@ station “STANAME”, for multistation sta needs to be a list with the stations
 <p>You can list all recording stations and only use a subset later.
 The file structure:
 ORIGIN;lat;lon;depth;
-#(R)eventno;eventtime;lat;lon;depth;</p>
-<blockquote>
-<div><p>station_name;p_time;s_time;
-…</p>
-</div></blockquote>
-<p>#(R)evtno;….</p>
+#(R)eventno;eventtime;lat;lon;depth;
+station_name;p_time;s_time;
+…
+#(R)evtno;….</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -208,8 +241,8 @@ events.</p></li>
 <li><p><strong>origin</strong> (<cite>numpy.ndarray</cite> or <cite>list</cite>) – Origin coordinates of the cluster. Can be the literal barycentre or the
 coordinates of the first master event (default).</p></li>
 <li><p><strong>station_names</strong> (<cite>list</cite>) – List of station names. Must be present in the station file as well.</p></li>
-<li><p><strong>p_times</strong> (<cite>list</cite>) – List of p-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</p></li>
-<li><p><strong>s_times</strong> (<cite>list</cite>) – List of s-pick timestrings in the format %y/%d/%m %H:%M:%S.%f</p></li>
+<li><p><strong>p_times</strong> (<cite>list</cite>) – List of p-pick timestrings in the format %Y/%d/%m %H:%M:%S.%f</p></li>
+<li><p><strong>s_times</strong> (<cite>list</cite>) – List of s-pick timestrings in the format %Y/%d/%m %H:%M:%S.%f</p></li>
 </ul>
 </dd>
 </dl>
@@ -251,9 +284,6 @@ make a logical naming system such as [‘STA001’, … ‘STA0015’]</p></li>
 <dd></dd></dl>
 
 </div>
-<div class="section" id="inputfile-generator-module">
-<h1>inputfile_generator module<a class="headerlink" href="#inputfile-generator-module" title="Permalink to this headline">¶</a></h1>
-</div>
 <div class="section" id="source">
 <h1>source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
@@ -261,7 +291,6 @@ make a logical naming system such as [‘STA001’, … ‘STA0015’]</p></li>
 <li class="toctree-l1"><a class="reference internal" href="hades_input.html">hades_input module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hades_location.html">hades_location module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hades_utils.html">hades_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inputfile_generator.html">inputfile_generator module</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">

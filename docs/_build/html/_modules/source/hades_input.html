@@ -250,6 +250,8 @@
 
 
     <span class="k">def</span> <span class="nf">__interev_distance</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="p">,</span><span class="n">tsp_ev2</span><span class="p">,</span><span class="n">kv</span><span class="p">,</span><span class="n">sta</span><span class="p">,</span> <span class="n">stations</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Chooses the inter-event distances computation method&quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">sta</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sta</span><span class="o">!=</span><span class="s1">&#39;ALL&#39;</span><span class="p">:</span>
             <span class="n">ie_dist</span><span class="o">=</span><span class="n">hades_input</span><span class="o">.</span><span class="n">__onesta_interev_distance</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="p">,</span><span class="n">tsp_ev2</span><span class="p">,</span><span class="n">kv</span><span class="p">,</span><span class="n">sta</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">sta</span><span class="p">)</span><span class="o">==</span><span class="nb">list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sta</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
@@ -261,6 +263,8 @@
 
 
     <span class="k">def</span> <span class="nf">__onesta_interev_distance</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="p">,</span><span class="n">tsp_ev2</span><span class="p">,</span><span class="n">kv</span><span class="p">,</span><span class="n">sta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;Computes inter-event distances with one station&quot;&quot;&quot;</span>
+
         <span class="n">stalist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">tsp_ev2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">sta</span> <span class="ow">in</span> <span class="n">stalist</span><span class="p">:</span>
             <span class="n">ie_dist</span><span class="o">=</span><span class="n">num</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="p">[</span><span class="n">sta</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">tsp_ev2</span><span class="p">[</span><span class="n">sta</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">kv</span>
@@ -270,6 +274,8 @@
 
 
     <span class="k">def</span> <span class="nf">__twosta_interev_distance</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="p">,</span><span class="n">tsp_ev2</span><span class="p">,</span><span class="n">kv</span><span class="p">,</span><span class="n">sta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes inter-event distances with two stations&quot;&quot;&quot;</span>
+
         <span class="n">sta1</span><span class="o">=</span><span class="n">sta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">sta2</span><span class="o">=</span><span class="n">sta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">stalist</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tsp_ev1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">tsp_ev2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
@@ -283,6 +289,23 @@
 
 
 <div class="viewcode-block" id="hades_input.relative_frame"><a class="viewcode-back" href="../../index.html#source.hades_input.hades_input.relative_frame">[docs]</a>    <span class="k">def</span> <span class="nf">relative_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Vp</span><span class="p">,</span><span class="n">Vs</span><span class="p">,</span><span class="n">sta</span><span class="p">,</span><span class="n">y_ref</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">z_ref</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">fixed_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a relative reference frame on basis of your reference events.</span>
+<span class="sd">        </span>
+<span class="sd">        Params</span>
+<span class="sd">        ------</span>
+<span class="sd">        Vp : `float`</span>
+<span class="sd">            P-wave velocity (homogeneous) in [m/s]</span>
+<span class="sd">        Vs : `float`</span>
+<span class="sd">            S-wave velocity (homogeneous) in [m/s]</span>
+<span class="sd">        sta : `list`</span>
+<span class="sd">            Stations list</span>
+<span class="sd">        y_ref : `int`</span>
+<span class="sd">            Y-reference initial sign, -1 or 1 (flips over y-axis)</span>
+<span class="sd">        z_ref : `int`</span>
+<span class="sd">            Z-reference initial sign, -1 or 1 (flips over z-axis)</span>
+<span class="sd">        fixed_depth : `float`</span>
+<span class="sd">            The &#39;depth&#39; between your events in m</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">kv</span><span class="o">=</span><span class="p">(</span><span class="n">Vp</span><span class="o">*</span><span class="n">Vs</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Vp</span><span class="o">-</span><span class="n">Vs</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refevid</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">4</span><span class="p">:</span>

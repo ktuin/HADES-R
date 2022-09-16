@@ -1,0 +1,8 @@
+.vscode/*
+pyber.egg-info/*
+**/.ipynb_checkpoints
+docs/*
+docs/.generated/*
+docs/_build/*
+**/__pycache__
+**/.DS_Store

@@ -97,10 +97,11 @@
 <span class="sd">    See [Grigoli et al. 2021] for further details.&quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_obj</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">output_frame</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_obj</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">output_frame</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">=</span><span class="n">input_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_frame</span> <span class="o">=</span> <span class="n">output_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">output_frame</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
             <span class="n">raise_error</span><span class="p">(</span><span class="s1">&#39;Wrong output_frame type, should be `str` options are cart or latlon&#39;</span><span class="p">)</span>
@@ -376,7 +377,8 @@
                     <span class="n">rotations</span><span class="o">=</span><span class="p">[</span><span class="n">theta</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">station</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="o">.</span><span class="n">stations</span><span class="p">[</span><span class="n">sts</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
             <span class="n">pca</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__pca_theta_calculation</span><span class="p">(</span><span class="n">qrot_z</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">qrot_z</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">qrot_z</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">evtsps</span><span class="p">,</span><span class="n">stations</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">pca</span> <span class="o">&lt;</span> <span class="n">pca_max_z</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update Z, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update Z, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
                 <span class="n">pca_max_z</span><span class="o">=</span><span class="n">pca</span>
                 <span class="n">theta_best_z</span><span class="o">=</span><span class="n">theta</span>
             <span class="k">else</span><span class="p">:</span>
@@ -389,7 +391,8 @@
             <span class="n">pca</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__pca_theta_calculation</span><span class="p">(</span><span class="n">qrot_a</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">qrot_a</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">qrot_a</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">evtsps</span><span class="p">,</span><span class="n">stations</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">pca</span> <span class="o">&lt;</span> <span class="n">pca_max_a</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update A, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update A, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
                 <span class="n">pca_max_a</span><span class="o">=</span><span class="n">pca</span>
                 <span class="n">theta_best_a</span><span class="o">=</span><span class="n">theta</span>
             <span class="k">else</span><span class="p">:</span> 
@@ -402,7 +405,8 @@
             <span class="n">pca</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__pca_theta_calculation</span><span class="p">(</span><span class="n">qrot_b</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">qrot_b</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">qrot_b</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">evtsps</span><span class="p">,</span><span class="n">stations</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">pca</span> <span class="o">&lt;</span> <span class="n">pca_max_b</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update B, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Update B, theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
                 <span class="n">pca_max_b</span><span class="o">=</span><span class="n">pca</span>
                 <span class="n">theta_best_b</span><span class="o">=</span><span class="n">theta</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pca</span> <span class="o">=</span> <span class="n">pca</span>

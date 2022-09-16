@@ -9,15 +9,21 @@ Welcome to HADES_2.0's documentation!
 .. include:: hades_location.rst
 .. include:: hades_input.rst
 .. include:: hades_utils.rst
-.. include:: inputfile_generator.rst
 .. include:: modules.rst
+.. include:: ../run/ridgecrest_example_part1
+.. include:: ../run/synthetic_example
+.. include:: ../input_file_maker
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
+   :glob:
    :caption: Contents:
 
-   run/ridgecrest_example_part1
+   input_file_maker
+   ridgecrest_example_part1
+   synthetic_example
+
 
 Indices and tables
 ==================

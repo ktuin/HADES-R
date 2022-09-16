@@ -13,19 +13,6 @@ def sortout(orig, refarray):
     resorted = ins4.copy()
     return resorted
 
-def find_element_in_list(element, list_element):
-    try:
-        index_element = list_element.index(element)
-        return index_element
-    except ValueError:
-        return None
-
-def find_element_in_list(element, list_element):
-    try:
-        index_element = list_element.index(element)
-        return index_element
-    except ValueError:
-        return None
 
 def distance_calculation(cluster, station):
     """Calculates the distances between cluster and station.
@@ -94,14 +81,15 @@ def make_statfile(path, filename, station_names, station_coordinates):
     print(f'Saved station file {path}{filename}  - success!')
 
 def make_datfile(path, filename, ref_idx, ref_coords, origin, station_names, p_times, s_times):
-    """Makes HADES event input file. 
+    """
+    Makes HADES event input file. 
     
     You can list all recording stations and only use a subset later.
     The file structure:
     ORIGIN;lat;lon;depth;
     #(R)eventno;eventtime;lat;lon;depth;
-        station_name;p_time;s_time;
-        ...
+    station_name;p_time;s_time;
+    ...
     #(R)evtno;....
      
     Parameters
