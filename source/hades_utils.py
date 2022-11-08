@@ -15,7 +15,8 @@ def sortout(orig, refarray):
 
 
 def distance_calculation(cluster, station):
-    """Calculates the distances between cluster and station.
+    """
+    Calculates the distances between cluster and station.
     
     Params
     ------
@@ -39,6 +40,35 @@ def distance_calculation(cluster, station):
     return distances
 
 
+def inter_iter_error(cluster1, cluster2):
+    """
+    Calculates the distance error between two consecutive point clouds 
+    cluster1 and cluster 2
+
+    Params
+    ------
+    cluster1 : `numpy.ndarray`
+        3D Array with cluster coords of N events [N,3]
+    cluster2 : `numpy.ndarray`
+        3D Array with cluster coords of N events [N,3]
+
+    Returns
+    -------
+    distances : `numpy.ndarray`
+        3D Array with distances of N events [N,3]
+    stdev : `numpy.ndarray`
+        1D Array with standard deviations of N events [N,1]
+    """
+
+    distances = np.sqrt(
+                (cluster1[:,0]-cluster2[:,0])**2+
+                (cluster1[:,1]-cluster2[:,1])**2+
+                (cluster1[:,2]-cluster2[:,2])**2
+        )
+
+    stdev = np.std(distances, axis=1)
+
+    return stdev, distances
 
 def find_element_in_list(element, list_element):
     """Finds element in list."""
@@ -144,4 +174,26 @@ def make_datfile(path, filename, ref_idx, ref_coords, origin, station_names, p_t
     print(f'Saved event file {path}{filename} - success!')
 
         
+def flip_sign(cluster, x, y, z, b):
+    
+    # first demean the cluster
+    cluster_dm = np.array(
+        [cluster[:,0] - cluster[b,0],
+        cluster[:,1] - cluster[b,1],
+        cluster[:,2] - cluster[b,2]]
+        ).T
+    
+    # flip axes
+    cluster_flip = np.array(
+        [cluster_dm[:,0] * x,
+        cluster_dm[:,1] * y,
+        cluster_dm[:,2] * z]).T
 
+    # now remean
+    cluster_rm = np.array(
+        [cluster_flip[:,0] + cluster[b,0],
+        cluster_flip[:,1] + cluster[b,1],
+        cluster_flip[:,2] + cluster[b,2]]
+        ).T
+    
+    return cluster_rm

@@ -36,11 +36,11 @@ class hades_input():
         # station file
         station_file=os.path.join(data_path,station_file)
         stations=hades_input.__read_stafile(station_file,reforig)
-        print(sta_select)
+        # print(sta_select)
         self.stations= stations
       
         self.stations = {f'{sta_select[0]}' : stations[sta_select[0]], f'{sta_select[1]}' : stations[sta_select[1]]}
-        print(self.stations)
+        # print(self.stations)
 
 
     def __read_evfile(input_file):
@@ -148,7 +148,7 @@ class hades_input():
             predist = False
 
 
-        print('stations used:',sta)
+        # print('stations used:',sta)
         evrefid=self.refevid
         evrefs=self.references
         self.sel_sta=sta
@@ -157,7 +157,7 @@ class hades_input():
         nevs=len(events)
         nref=len(evrefid)
 
-        print(f'{nref} master events used')
+        # print(f'{nref} master events used')
 
         if predist == False:
             distances=num.zeros([nevs,nevs])
@@ -172,7 +172,7 @@ class hades_input():
                         distances[i,j]=hades_input.__interev_distance(tsp_ev1,tsp_ev2,kv,sta,self.stations)
                         distances[j,i]=distances[i,j]
             self.distances=distances
-            print('DISTANCE SHAPE',num.shape(distances))
+            # print('DISTANCE SHAPE',num.shape(distances))
             self.events=events
         else:
             self.distances=dist
@@ -275,6 +275,7 @@ class hades_input():
         if fixed_depth:
             references[3,2]=fixed_depth*1000.
         else:
+            # IMPLEMENT A least-squares misfit solution here!!!
             references[3,2]=z_ref*num.sqrt(d[0,3]**2-references[3,0]**2-references[3,1]**2)
 
         self.rel_references=references

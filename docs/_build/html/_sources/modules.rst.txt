@@ -1,12 +1,9 @@
-source
-======
+HADES_2.0
+=========
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
-   hades_input
-   hades_location
-   hades_utils
-   input_file_maker
-   ridgecrest_example_part1
-   synthetic_example
+   source
+   setup
+

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>source.hades_location &mdash; HADES_2.0 2.0.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>source.hades_location &mdash; HADES_2.0 2.0.1 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -33,11 +33,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_input.html">hades_input module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_location.html">hades_location module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_utils.html">hades_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../inputfile_generator.html">inputfile_generator module</a></li>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">HADES_2.0</a></li>
 </ul>
 
         </div>
@@ -77,7 +75,7 @@
 
 <span class="n">km</span><span class="o">=</span><span class="mf">1000.</span>
 
-<div class="viewcode-block" id="hades_location"><a class="viewcode-back" href="../../index.html#source.hades_location.hades_location">[docs]</a><span class="k">class</span> <span class="nc">hades_location</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="hades_location"><a class="viewcode-back" href="../../source.html#source.hades_location.hades_location">[docs]</a><span class="k">class</span> <span class="nc">hades_location</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class takes input objects from hades_input.py to locate events with</span>
 <span class="sd">    respect to other events (relative location), after which an absolute location is </span>
 <span class="sd">    found using 1 (relative mode) or more (&lt; 4, absolute) master events. </span>
@@ -109,7 +107,7 @@
             <span class="n">raise_error</span><span class="p">(</span><span class="s1">&#39;Wrong output_frame name, options are cart or latlon&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="hades_location.location"><a class="viewcode-back" href="../../index.html#source.hades_location.hades_location.location">[docs]</a>    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">plot</span><span class="p">):</span>
+<div class="viewcode-block" id="hades_location.location"><a class="viewcode-back" href="../../source.html#source.hades_location.hades_location.location">[docs]</a>    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">plot</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Decision module that dictates what hades_location will do according to</span>
 <span class="sd">        the mode of operation (&#39;rel&#39; or &#39;abs). Relative relocation means relative</span>
 <span class="sd">        to one master event, absolute means within the reference coordinate system</span>
@@ -618,7 +616,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Katinka Tuinstra.</p>
+    <p>&#169; Copyright 2022, K. Tuinstra &amp; F. Grigoli.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

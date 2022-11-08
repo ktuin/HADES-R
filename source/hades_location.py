@@ -1,4 +1,5 @@
 from e13tools import raise_error
+from IPython.display import display
 import numpy as num
 import latlon2cart
 import os
@@ -36,9 +37,9 @@ class hades_location(object):
         self.output_frame = output_frame
         self.verbose = verbose
 
-        if type(output_frame) is not str:
+        if type(output_frame) != str:
             raise_error('Wrong output_frame type, should be `str` options are cart or latlon')
-        elif output_frame is not 'cart' and output_frame is not 'latlon':
+        elif output_frame != 'cart' and output_frame != 'latlon':
             raise_error('Wrong output_frame name, options are cart or latlon')
 
 
@@ -80,9 +81,9 @@ class hades_location(object):
         self.locations=references
         if mode=='rel':
             self.__absolute_cluster_location(filename, plot)
-            references1=(self.input).references
-            references2=(self.input).rel_references
-            print(references1,references2)
+            # references1=(self.input).references
+            # references2=(self.input).rel_references
+            # print(references1,references2)
         elif mode=='abs':
             rect = self.__pca_theta_calculation(xobs=self.locations[:,0],
                 yobs=self.locations[:,1], zobs=self.locations[:,2], 
@@ -143,7 +144,7 @@ class hades_location(object):
         return references
 
 
-    def __absolute_cluster_location(self,filename, plot, acc=5):
+    def __absolute_cluster_location(self,filename, plot, acc=1):
         """Finds the absolute location of events with respect to a single master event, via rotation
         optimisation. The optimisation runs by maximising the rectilinearity by minimising the (normalised) 
         error. Uses brute-force grid search of 350 degrees rotation around the Z, A, B axes, with a 5 degree
@@ -298,65 +299,67 @@ class hades_location(object):
         pca_max_z, pca_max_a, pca_max_b = 1,1,1
         sts = list(stations.keys())
         self.evtsps = evtsps
-
-        thetas=num.arange(0,360, acc)
-        theta_best_z, theta_best_a, theta_best_b = 0,0,0
-        pca_max_a, pca_max_b, pca_max_z = 1,1,1
-
-
-        print('------------------ trying Z rotation ---------------')
-        for theta in thetas:
-            qrot_z = apply_rotations_spatial(self.locations, 
-                    rotations=[theta, 0 , 0], station=(self.input).stations[sts[0]])
-            pca=self.__pca_theta_calculation(qrot_z[:,0], qrot_z[:,1], qrot_z[:,2], evtsps,stations, plot=False)
-            if pca < pca_max_z:
-                if self.verbose == True:
-                    print('Update Z, theta', theta)
-                pca_max_z=pca
-                theta_best_z=theta
-            else:
-                theta_best_z=theta_best_z
-
-        print('------------------ trying A rotation ---------------')
-        for theta in thetas:
-            qrot_a = apply_rotations_spatial(self.locations, 
-                    rotations=[theta_best_z, theta , 0], station=(self.input).stations[sts[0]])
-            pca=self.__pca_theta_calculation(qrot_a[:,0], qrot_a[:,1], qrot_a[:,2], evtsps,stations, plot=False)
-
-            if pca < pca_max_a:
-                if self.verbose == True:
-                    print('Update A, theta', theta)
-                pca_max_a=pca
-                theta_best_a=theta
-            else: 
-                theta_best_a=theta_best_a
-
-        print('------------------ trying B rotation ---------------')
-        for theta in thetas:
-            qrot_b = apply_rotations_spatial(self.locations, 
-                    rotations=[theta_best_z, theta_best_a , theta], station=(self.input).stations[sts[0]])
-            pca=self.__pca_theta_calculation(qrot_b[:,0], qrot_b[:,1], qrot_b[:,2], evtsps,stations, plot=False)
-
-            if pca < pca_max_b:
-                if self.verbose == True:
-                    print('Update B, theta', theta)
-                pca_max_b=pca
-                theta_best_b=theta
-                self.pca = pca
-            else:
-                theta_best_b=theta_best_b
-
-
-        qrot_best = apply_rotations_spatial(self.locations, 
-                    rotations=[theta_best_z, theta_best_a , theta_best_b], station=(self.input).stations[sts[0]])
-        self.__pca_theta_calculation(qrot_best[:,0], qrot_best[:,1], qrot_best[:,2], evtsps,stations, plot=plot)
+        self.rect=0.5
         
-        print('theta best', [theta_best_z, theta_best_a, theta_best_b])
-        theta_best=(360*num.pi)/180
 
-        self.locations[:,0]=qrot_best[:,0]#crot.real
-        self.locations[:,1]=qrot_best[:,1]#crot.imag
-        self.locations[:,2]=qrot_best[:,2]#zrot
+        # thetas=num.arange(0,360, acc)
+        # theta_best_z, theta_best_a, theta_best_b = 0,0,0
+        # pca_max_a, pca_max_b, pca_max_z = 1,1,1
+
+
+        # # print('------------------ trying Z rotation ---------------')
+        # for theta in thetas:
+        #     qrot_z = apply_rotations_spatial(self.locations, 
+        #             rotations=[theta, 0 , 0], station=(self.input).stations[sts[0]])
+        #     pca=self.__pca_theta_calculation(qrot_z[:,0], qrot_z[:,1], qrot_z[:,2], evtsps,stations, plot=False)
+        #     if pca < pca_max_z:
+        #         if self.verbose == True:
+        #             print('Update Z, theta', theta)
+        #         pca_max_z=pca
+        #         theta_best_z=theta
+        #     else:
+        #         theta_best_z=theta_best_z
+
+        # # print('------------------ trying A rotation ---------------')
+        # for theta in thetas:
+        #     qrot_a = apply_rotations_spatial(self.locations, 
+        #             rotations=[theta_best_z, theta , 0], station=(self.input).stations[sts[0]])
+        #     pca=self.__pca_theta_calculation(qrot_a[:,0], qrot_a[:,1], qrot_a[:,2], evtsps,stations, plot=False)
+
+        #     if pca < pca_max_a:
+        #         if self.verbose == True:
+        #             print('Update A, theta', theta)
+        #         pca_max_a=pca
+        #         theta_best_a=theta
+        #     else: 
+        #         theta_best_a=theta_best_a
+
+        # # print('------------------ trying B rotation ---------------')
+        # for theta in thetas:
+        #     qrot_b = apply_rotations_spatial(self.locations, 
+        #             rotations=[theta_best_z, theta_best_a , theta], station=(self.input).stations[sts[0]])
+        #     pca=self.__pca_theta_calculation(qrot_b[:,0], qrot_b[:,1], qrot_b[:,2], evtsps,stations, plot=False)
+
+        #     if pca < pca_max_b:
+        #         if self.verbose == True:
+        #             print('Update B, theta', theta)
+        #         pca_max_b=pca
+        #         theta_best_b=theta
+        #         self.pca = pca
+        #     else:
+        #         theta_best_b=theta_best_b
+
+
+        # qrot_best = apply_rotations_spatial(self.locations, 
+        #             rotations=[theta_best_z, theta_best_a , theta_best_b], station=(self.input).stations[sts[0]])
+        # self.__pca_theta_calculation(qrot_best[:,0], qrot_best[:,1], qrot_best[:,2], evtsps,stations, plot=plot)
+        
+        # # print('theta best', [theta_best_z, theta_best_a, theta_best_b])
+        # theta_best=(360*num.pi)/180
+
+        self.locations[:,0]=crot.real#qrot_best[:,0]
+        self.locations[:,1]=crot.imag#qrot_best[:,1]
+        self.locations[:,2]=zrot#qrot_best[:,2]
         self.__catalogue_creation(filename)
 
         if plot == True:
@@ -453,9 +456,9 @@ class hades_location(object):
             values=values/num.max(values)
             vector=vectors[:,num.argmax(values)]
             if num.sign(vector[0])>0 and num.sign(vector[1])>0:
-                rect= ( 1 / rect*(num.max(values)/num.min(values)) ) 
+                rect= ( 1 / rect*(num.max(values)/num.min(values))+1e-30 ) 
             else:
-                rect = 1
+                rect = 1e10
             if plot == True:
                 plot_data.append([dist[ir_dist],tsp[ir_dist]])
         if plot == True:
@@ -493,7 +496,7 @@ class hades_location(object):
         
         nev,_=num.shape(self.locations)
         evids=(self.input).events
-        print('Location process completed, number of located events: %d '%(nev))
+        display('Location process completed, number of located events: %d '%(nev))
         catalogue=[]
         latref,lonref=(self.input).origin[0],(self.input).origin[1]
         orig=latlon2cart.Coordinates(latref,lonref,0)
@@ -529,7 +532,7 @@ class hades_location(object):
         c4='#34A853'
         c3='#FBBC05'
         nref=len((self.input).refevid)
-        print(f'{nref} reference events used')
+        # print(f'{nref} reference events used')
         plt.figure(figsize=(10.0,15.0))
         ax1=plt.subplot(111)
         ax1.scatter(self.locations[nref:,0],self.locations[nref:,1], s=50, c=c1)

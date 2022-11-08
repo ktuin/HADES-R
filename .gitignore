@@ -1,8 +1,17 @@
 .vscode/*
 pyber.egg-info/*
 **/.ipynb_checkpoints
+notebooks/*.ipynb
+notebooks/data/images/*.png
+notebooks/data/outputs/**
 docs/*
 docs/.generated/*
 docs/_build/*
 **/__pycache__
 **/.DS_Store
+
+
+notebooks/forge_example_DAS_auto_EQ.py
+notebooks/forge_example_DAS_auto_MICRO.py
+notebooks/forge_example_DAS_auto_round.py
+notebooks/forge_example_DAS_auto_lengthy.py

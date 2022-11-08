@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>source.hades_utils &mdash; HADES_2.0 2.0.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>source.hades_utils &mdash; HADES_2.0 2.0.1 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -33,10 +33,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_input.html">hades_input module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_location.html">hades_location module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../hades_utils.html">hades_utils module</a></li>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">HADES_2.0</a></li>
 </ul>
 
         </div>
@@ -69,7 +68,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">e13tools</span> <span class="kn">import</span> <span class="n">raise_error</span>
 
-<div class="viewcode-block" id="sortout"><a class="viewcode-back" href="../../index.html#source.hades_utils.sortout">[docs]</a><span class="k">def</span> <span class="nf">sortout</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">refarray</span><span class="p">):</span>
+<div class="viewcode-block" id="sortout"><a class="viewcode-back" href="../../source.html#source.hades_utils.sortout">[docs]</a><span class="k">def</span> <span class="nf">sortout</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">refarray</span><span class="p">):</span>
 
     <span class="n">ins1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">orig</span><span class="p">[</span><span class="mi">4</span><span class="p">:],</span> <span class="n">refarray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">orig</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">ins2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ins1</span><span class="p">,</span>     <span class="n">refarray</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">orig</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
@@ -80,7 +79,7 @@
     <span class="k">return</span> <span class="n">resorted</span></div>
 
 
-<div class="viewcode-block" id="distance_calculation"><a class="viewcode-back" href="../../index.html#source.hades_utils.distance_calculation">[docs]</a><span class="k">def</span> <span class="nf">distance_calculation</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">station</span><span class="p">):</span>
+<div class="viewcode-block" id="distance_calculation"><a class="viewcode-back" href="../../source.html#source.hades_utils.distance_calculation">[docs]</a><span class="k">def</span> <span class="nf">distance_calculation</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">station</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculates the distances between cluster and station.</span>
 <span class="sd">    </span>
 <span class="sd">    Params</span>
@@ -106,7 +105,7 @@
 
 
 
-<div class="viewcode-block" id="find_element_in_list"><a class="viewcode-back" href="../../index.html#source.hades_utils.find_element_in_list">[docs]</a><span class="k">def</span> <span class="nf">find_element_in_list</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">list_element</span><span class="p">):</span>
+<div class="viewcode-block" id="find_element_in_list"><a class="viewcode-back" href="../../source.html#source.hades_utils.find_element_in_list">[docs]</a><span class="k">def</span> <span class="nf">find_element_in_list</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">list_element</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds element in list.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">index_element</span> <span class="o">=</span> <span class="n">list_element</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
@@ -115,13 +114,13 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="plot_tstp"><a class="viewcode-back" href="../../index.html#source.hades_utils.plot_tstp">[docs]</a><span class="k">def</span> <span class="nf">plot_tstp</span><span class="p">():</span>
+<div class="viewcode-block" id="plot_tstp"><a class="viewcode-back" href="../../source.html#source.hades_utils.plot_tstp">[docs]</a><span class="k">def</span> <span class="nf">plot_tstp</span><span class="p">():</span>
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="plot_multirun"><a class="viewcode-back" href="../../index.html#source.hades_utils.plot_multirun">[docs]</a><span class="k">def</span> <span class="nf">plot_multirun</span><span class="p">():</span>
+<div class="viewcode-block" id="plot_multirun"><a class="viewcode-back" href="../../source.html#source.hades_utils.plot_multirun">[docs]</a><span class="k">def</span> <span class="nf">plot_multirun</span><span class="p">():</span>
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="make_statfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_statfile">[docs]</a><span class="k">def</span> <span class="nf">make_statfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">station_coordinates</span><span class="p">):</span>
+<div class="viewcode-block" id="make_statfile"><a class="viewcode-back" href="../../source.html#source.hades_utils.make_statfile">[docs]</a><span class="k">def</span> <span class="nf">make_statfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">station_coordinates</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Makes a HADES station input file. </span>
 <span class="sd">    </span>
 <span class="sd">    You can list all recording stations and only use a subset later.</span>
@@ -146,7 +145,7 @@
     
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saved station file </span><span class="si">{</span><span class="n">path</span><span class="si">}{</span><span class="n">filename</span><span class="si">}</span><span class="s1">  - success!&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="make_datfile"><a class="viewcode-back" href="../../index.html#source.hades_utils.make_datfile">[docs]</a><span class="k">def</span> <span class="nf">make_datfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ref_idx</span><span class="p">,</span> <span class="n">ref_coords</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">p_times</span><span class="p">,</span> <span class="n">s_times</span><span class="p">):</span>
+<div class="viewcode-block" id="make_datfile"><a class="viewcode-back" href="../../source.html#source.hades_utils.make_datfile">[docs]</a><span class="k">def</span> <span class="nf">make_datfile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ref_idx</span><span class="p">,</span> <span class="n">ref_coords</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">station_names</span><span class="p">,</span> <span class="n">p_times</span><span class="p">,</span> <span class="n">s_times</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Makes HADES event input file. </span>
 <span class="sd">    </span>
@@ -220,7 +219,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Katinka Tuinstra.</p>
+    <p>&#169; Copyright 2022, K. Tuinstra &amp; F. Grigoli.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
