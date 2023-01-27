@@ -276,7 +276,16 @@ class hades_input():
             references[3,2]=fixed_depth*1000.
         else:
             # IMPLEMENT A least-squares misfit solution here!!!
-            references[3,2]=z_ref*num.sqrt(d[0,3]**2-references[3,0]**2-references[3,1]**2)
+
+            zs = np.linspace(-fixed_depth, fixed_depth, 100)
+
+            for i in range(len(zs)):
+                references[3,2] = zs * z_ref *  num.sqrt(d[0,3]**2-references[3,0]**2-references[3,1]**2)
+
+                
+
+
+            # references[3,2]=z_ref*num.sqrt(d[0,3]**2-references[3,0]**2-references[3,1]**2)
 
         self.rel_references=references
         self.refevid=events

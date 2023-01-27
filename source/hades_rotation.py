@@ -3,10 +3,10 @@ from math import radians, degrees
 
 from scipy.spatial.transform import Rotation as R
 from scipy.optimize import fmin_powell, fmin_cg, fmin_bfgs, fmin_l_bfgs_b, basinhopping,brute, dual_annealing
-from scipy.optimize import differential_evolution, shgo, direct
+from scipy.optimize import differential_evolution
 import matplotlib.pyplot as plt
 
-from rotations_utils import compute_traveltime, define_axis_vectors, demean_traveltimes, pca_theta_calculation
+from rotations_utils import compute_traveltime, define_axis_vectors, demean_traveltimes
 
 class Cluster:
     """ This class can do 3D rotation optimization on a cluster of points (or earthquakes).
@@ -203,16 +203,17 @@ class Cluster:
                 ax1 = plt.subplot(1,4,count)
                 plt.title(f'Station {count}')
                 plt.xlabel('Distance [m]'), plt.ylabel('Ts-Tp [s]')
-                ax1.scatter(dist[ir_dist], tsp[ir_dist])
+                ax1.scatter(dist[ir_dist], tsp[ir_dist], c='k')
             
             count += 1
 
             if signs[sta]>=0:
                 rect=rect
             else:
-                rect=1e10#-1*rect
-                
+                rect=1e24#-1*rect
+
             rectall.append(rect)
+
         if plot==True:
             fig.suptitle(f'Rectilinearity = {np.mean(np.array(rectall))}')
             fig.tight_layout()
@@ -288,12 +289,12 @@ class Cluster:
         # select for PCA mismatch (fill in return)
         O_t = self.invert_rotations_spatial(self.subcluster, rotations)
         self.O_t = O_t 
-        self.rms = self.rms_mismatch_abs(self.O_t)        
+        # self.rms = self.rms_mismatch_abs(self.O_t)        
         #rect = self.pca_theta_calculation(self.dtps_org.T, self.O_t)
 #         self.costvect.append(self.rms_mismatch(self.dtps_org, Y_t))
         self.costvect.append(self.pca_theta_calculation(self.dtps_org.copy().T, self.O_t))
-        self.rmsvect.append(self.rms)
-        return np.log(self.pca_theta_calculation(self.dtps_org.T, self.O_t) )
+        # self.rmsvect.append(self.rms)
+        return np.log10(self.pca_theta_calculation(self.dtps_org.T, self.O_t) )
 #         return self.rms_mismatch(self.dtps_org, Y_t)
         # return self.rms_mismatch_abs(self.O_t)
 
@@ -308,7 +309,7 @@ class Cluster:
 
         self.optall = optall
         #bounds = [(0, 2*np.pi), (0, 2*np.pi), (0,2*np.pi)]
-        bounds = [(0, 360), (0, 360), (0, 360)]
+        bounds = [(0, 359), (0, 359), (0, 359)]
         
         if method == 'powell':
             best_params = fmin_powell(self.cost_function, prior)
@@ -337,12 +338,12 @@ class Cluster:
 
             
         elif method == 'basinhopping':
-            best_params_bh = basinhopping(self.cost_function, prior, niter=350, T=100, 
+            best_params_bh = basinhopping(self.cost_function, prior, niter=350, T=120, 
                                         minimizer_kwargs = {"method": "L-BFGS-B", "bounds": bounds,
                                                             "options":{"ftol":1e-16, "maxiter":10}
                                                            }, 
                                         target_accept_rate=0.5,
-                                        stepsize=180,
+                                        stepsize=359,
                                         stepwise_factor=0.4,  
                                         )
             
@@ -361,15 +362,7 @@ class Cluster:
             print('BEST PARAMETERS\n',best_params_de)
             
             
-#         elif method == 'shgo':
-#             best_params_shgo = differential_evolution()
-
-                        
-#         elif method == 'direct':
-#             best_params_dir = differential_evolution()
-            
-
-            
+                      
         elif method == 'dual_annealing':
             best_params_da = dual_annealing(self.cost_function, bounds=bounds,  visit=2.9,
                                             initial_temp=5e4, restart_temp_ratio=2e-6, maxiter=10000,
@@ -390,7 +383,7 @@ class Cluster:
         self.tC = self.invert_rotations_spatial(self.cluster, thetas)   
         self.rect = self.pca_theta_calculation(self.dtps_org.T, self.tC,   plot=True)
 
-        self.rms_abs = self.rms_mismatch_abs(self.tC)
+        # self.rms_abs = self.rms_mismatch_abs(self.tC)
             
         self.thetas = thetas
         
@@ -402,14 +395,12 @@ class Cluster:
         print('---------------------------------------')
         print('\n')
         
-        print('absolute RMS [m]', self.rms_abs)
+        # print('absolute RMS [m]', self.rms_abs)
         
         plt.figure()
         plt.grid()
         plt.title("Cost curve")
         plt.plot(np.array(self.costvect))
-#         plt.semilogy(np.array(self.rectvect))
-#         plt.semilogy(np.array(self.rmsvect))
         plt.ylabel(f'Misfit {method} value')
         plt.xlabel('Iteration')
         plt.show()

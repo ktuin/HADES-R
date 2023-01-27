@@ -203,7 +203,7 @@ def plot_clusters_3D(cluster, sta1, sta2, bary):
 
     # plt.legend()
 
-    # plt.show()
+    # #plt.show()
 
     return fig, ax
 
@@ -329,7 +329,7 @@ def pca_theta_calculation(cluster_comp, evtsps,stations,plot):
         if plot==True:
             fig.suptitle(f'Rectilinearity = {rect}')
             fig.tight_layout()
-            plt.show()
+            #plt.show()
 
 
         print("----------------------------")

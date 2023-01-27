@@ -4,6 +4,7 @@ pyber.egg-info/*
 notebooks/*.ipynb
 notebooks/data/images/*.png
 notebooks/data/outputs/**
+notebooks/data/inputs/**
 docs/*
 docs/.generated/*
 docs/_build/*
