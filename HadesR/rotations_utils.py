@@ -82,11 +82,23 @@ def setup(
 
 
 def compute_distance(x_c, x_r, frame):
-    """Computes the 3D Euclidean distance between points
-    x_c: location of the cluster
-            if spherical coords, make sure to frame it as lat, lon, depth
-    x_r: location of the receiver
-    frame: Bool, for Cartesian set False, for Spherical (WGS84) set True"""
+    """
+    Computes the 3D Euclidean distance between points.
+
+    Parameters
+    ----------
+    x_c : tuple
+        Location of the cluster. If coordinates are spherical, frame them as (lat, lon, depth).
+    x_r : tuple
+        Location of the receiver.
+    frame : bool
+        Set to True for spherical coordinates (WGS84), False for Cartesian coordinates.
+
+    Returns
+    -------
+    float
+        The distance between the cluster and the receiver.
+    """
 
     if frame == True:  # if in latlon convert to a UTM domain for cartesian distance
         x_cC, x_rC = np.zeros(np.shape(x_c)), np.zeros(np.shape(x_r))
