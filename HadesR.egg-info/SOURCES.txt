@@ -1,0 +1,14 @@
+LICENSE
+README.md
+setup.py
+HadesR/__init__.py
+HadesR/hades_input.py
+HadesR/hades_location.py
+HadesR/hades_rotation.py
+HadesR/hades_utils.py
+HadesR/rotations_utils.py
+HadesR.egg-info/PKG-INFO
+HadesR.egg-info/SOURCES.txt
+HadesR.egg-info/dependency_links.txt
+HadesR.egg-info/requires.txt
+HadesR.egg-info/top_level.txt

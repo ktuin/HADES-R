@@ -5,7 +5,7 @@ HADES one master event version with quaternion rotations and NN module.
 PREREQUISITES
 -------------
 
-Please download the `latlon2cart` module from: https://github.com/wulwife/latlon2cart 
+Please download and install the `latlon2cart` module from: https://github.com/wulwife/latlon2cart or `pip install latlon2cart`.
 
 
 **Dependencies:**
@@ -16,3 +16,4 @@ Please download the `latlon2cart` module from: https://github.com/wulwife/latlon
 **To install all:**
 
 `conda install math halo numpy matplotlib pandas datetime time`
+

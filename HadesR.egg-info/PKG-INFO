@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: HadesR
+Version: 1.0
+Summary: One-master-event relative DGP event locator
+Author: Katinka Tuinstra
+Author-email: katinka.tuinstra@sed.ethz.ch
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: halo
+Requires-Dist: matplotlib
+Requires-Dist: e13tools
+Requires-Dist: datetime
