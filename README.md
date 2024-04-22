@@ -7,6 +7,7 @@ PREREQUISITES
 
 Please download the `latlon2cart` module from: https://github.com/wulwife/latlon2cart 
 
+If you still need to pick (semi-)manually, consider using https://github.com/ktuin/DAS_PICKS
 
 **Dependencies:**
 
