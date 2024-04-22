@@ -7,7 +7,6 @@ PREREQUISITES
 
 Please download the `latlon2cart` module from: https://github.com/wulwife/latlon2cart 
 
-Please download the `LatLongUTMConversion` from SPECFEM3D: https://github.com/SPECFEM/specfem3d/blob/master/CUBIT_GEOCUBIT/geocubitlib/LatLongUTMconversion.py 
 
 **Dependencies:**
 
