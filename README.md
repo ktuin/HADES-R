@@ -12,7 +12,7 @@ If you still need to pick (semi-)manually, consider using https://github.com/ktu
 **Dependencies:**
 
 - `scipy`  > version 1.9.3
-- `math`, `halo`, `numpy`, `matplotlib`, `pandas`, `datetime`, `time`
+- `math`, `halo`, `numpy`, `matplotlib`, `pandas`, `datetime`, `time`, `numpy`
 
 **To install all:**
 
