@@ -3,6 +3,17 @@ pyber.egg-info/*
 **/.ipynb_checkpoints
 notebooks/*.ipynb
 notebooks/data/images/*.png
+notebooks/data/images/*.svg
+notebooks/data/images/*.eps
+
+notebooks/data/images_revisions/** 
+notebooks/data/outputs_vjan24/** 
+notebooks/basemap_AGUBook.py
+
+notbooks/data/outputs/*.eps
+
+
+source/__pycache__/**
 notebooks/data/outputs/**
 notebooks/data/inputs/**
 docs/*
@@ -11,8 +22,14 @@ docs/_build/*
 **/__pycache__
 **/.DS_Store
 
+notebooks/*.txt
+notebooks/*.png
 
+.DA_Store
+notebooks/data_federica
+notebooks/evdata
 notebooks/forge_example_DAS_auto_EQ.py
+
 notebooks/forge_example_DAS_auto_MICRO.py
 notebooks/forge_example_DAS_auto_round.py
 notebooks/forge_example_DAS_auto_lengthy.py
