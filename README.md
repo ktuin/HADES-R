@@ -1,14 +1,23 @@
 # HADES-R
 
+
 ## Overview
 
 eartHquake locAtion via Distance gEometry Solvers - RELATIVE
 
 HADES-R (HADES - Relative) is an advanced seismic data processing tool that utilizes quaternion rotations to analyze seismic event locations in a relative sense. Designed to work with one master event, HADES-R improves upon traditional method HADES (https://github.com/wulwife/HADES) by incorporating modern computational techniques to enhance precision and efficiency.
 
-See preprint from Tuinstra et al., 2023: 
-https://doi.org/10.48550/arXiv.2309.16317
+This code is the basis for the following open-access paper, please read for more details: 
+Tuinstra, Katinka et al. "Locating clustered seismicity using Distance Geometry Solvers: applications for sparse and single-borehole DAS networks", Geophysical Journal International (2024);, ggae168, https://doi.org/10.1093/gji/ggae168
 
+It also enables the use of classical HADES:
+Grigoli, Francesco, et al. "Relative earthquake location procedure for clustered seismicity with a single station." Geophysical Journal International 225.1 (2021): 608-626 (https://doi.org/10.1093/gji/ggaa607)
+
+Please contact us for collaborations and/or suggestions!
+
+--> See examples for an input file maker and a synthetic example
+--> See docs html for more information on code use
+--> It is possible to input inter-event distances calculated with an external method (cross-correlations, neural networks, etc.)
 
 ## Features
 
