@@ -11,10 +11,11 @@ examples/data/images/*.eps
 
 
 
+
 source/__pycache__/**
 examples/data/outputs/**
 
-docs/*
+
 docs/.generated/*
 docs/_build/*
 **/__pycache__

@@ -1,0 +1,129 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Input file generator for HADES\n",
+    "\n",
+    "This file is an example of how to load and structure your data such that it can be used by HADES."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# to set the path for importing HADES modules\n",
+    "import sys\n",
+    "sys.path.append(\"../source/\")\n",
+    "\n",
+    "# Import packages\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "\n",
+    "from HadesR.hades_utils import make_datfile\n",
+    "from HadesR.hades_utils import make_statfile"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### You need:\n",
+    "\n",
+    "- Station names, station coordinates (lat, lon, depth) (WGS84)\n",
+    "\n",
+    "- Your seismic events from ***one cluster at a time*** with:\n",
+    "    - Arrival time picks (P and S) in format `%yy/%dd/%mm %H:%M:%S.%f` *for each station and each event*. All events must be picked for both P and S at the all stations. If that's not the case select only the subset of events or stations that does satisfy this criterium.\n",
+    "    \n",
+    "\n",
+    "- Master events of choice. You must have at least ***one*** master event with an absolute location.\n",
+    "- Define the ***origin*** of your cluster. Mostly this is chosen as the first master event.\n",
+    "\n",
+    "\n",
+    "> If you have <4 master events, you should flag a total of 4 events as master event if you have just one pre-defined location. You may leave the extra flagged events locationless. E.g. you have 1 master event, then you add its location to the input file, and flag 3 other events with different $t_s - t_p$ to ensure that they don't lie close together. If you have a minimum of 4 master events you should flag the master events you want to use. \n",
+    "\n",
+    "\n",
+    "\n",
+    "> You can make a station file with more station locations even if they are not all used in your dat file. In this way, you can run multiple scripts with one station file and linking different station combinations. You can also use the same event file with multiple station measurements and only use a subset!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Import your data\n",
+    "\n",
+    "# station(s)\n",
+    "\n",
+    "\n",
+    "\n",
+    "# master event(s) and location(s)\n",
+    "# !!! Make sure your depth is in km's and your coordinates in lat, lon!\n",
+    "\n",
+    "\n",
+    "\n",
+    "# P- and S- traveltime picks datetime format (%yy/%dd/%mm %H:%M:%S.%f)\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# make a station file\n",
+    "make_statfile()\n",
+    "\n",
+    "# make a dat file\n",
+    "make_datfile()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Quality check:\n",
+    "\n",
+    "# import your datfile\n",
+    "\n",
+    "# import your statfile\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3.8.5 ('obspy')",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "file_extension": ".jl",
+   "mimetype": "application/julia",
+   "name": "python",
+   "version": "3.8.5"
+  },
+  "orig_nbformat": 4,
+  "vscode": {
+   "interpreter": {
+    "hash": "919706ca7f2637aff2ebb36e84a087b50594c4fadb29ca76f5df1eb8ab927b14"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
