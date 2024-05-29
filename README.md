@@ -53,7 +53,7 @@ HADES-R requires the following libraries:
 Additional tools:
 
 - **latlon2cart**: Necessary for coordinate conversions. Available at [latlon2cart GitHub repository](https://github.com/wulwife/latlon2cart).
-- **DAS_PICKS**: Recommended for users needing manual or semi-manual data picking. Visit [DAS_PICKS GitHub repository](https://github.com/ktuin/DAS_PICKS).
+
 
 ## Installation
 
