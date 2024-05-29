@@ -14,6 +14,9 @@ notbooks/data/outputs/*.eps
 
 
 source/__pycache__/**
+notebooks/*.ipynb
+notebooks/*.py
+**/notebooks/
 notebooks/data/outputs/**
 notebooks/data/inputs/**
 docs/*
