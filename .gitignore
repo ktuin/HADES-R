@@ -17,7 +17,7 @@ examples/data/outputs/**
 
 
 docs/.generated/*
-docs/_build/*
+
 **/__pycache__
 **/.DS_Store
 .DA_Store
